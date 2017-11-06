@@ -1,0 +1,63 @@
+################ IRC BOT (CHAMOT) ################
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from
+this project, via any medium is strictly prohibited
+
+All notable changes to this project will be
+documented in this file.
+
+AUTHOR: Harrygiel
+
+################       TODO       ################	(priority)
+-Seen, Spotify, deezer and co modules 					0
+-Add Nose to the cover project							0
+-Add warning possibility for desactivated modules 		1
+-Clear every code smell									1
+-Add Schedule event possibility							2
+-Comment channel node on disconnection to keep conf		2
+-Allow bot name to be changed (code AND /nick)			2
+-Allow load by name, and not only if in defaultconf		2
+(useful to load a module without restarting)			
+-Allow regexp in admin mask								3
+-Allow use of official admin from channel				3
+-Act from bash as superadmin							3
+-Add more things to logs 								4
+-Rename every thread in init to correct logs			4
+-Allow configuration reload for super-admin				4
+-Auto fix and analysis									4
+-Allow admin to list every module						4
+-Allow admin to list every admin						4
+-Add Blacklist											4
+-Auto check running module and reboot it in case		4
+of crash												
+-Auto reconnect (every case)							5
+-Add on github											5
+-Add login info in XML									5
+-Add admin level (we don't want a new admin to 			5
+kick CA)
+
+################    CHANGELOG     ################
+
+
+########   V2.0
+
+-Passage en unicode obligatoire avec : 
+from __future__ import unicode_literals
+-Passage d'un script linéaire à un script basé sur
+ les threads
+-Ajout d'une vrai prise en compte d'un sigint,
+avec arret propre
+-Gestion pyramidale des administrateurs
+-Gestion pyramidale de la liste des calls des modules
+-Gestion complete de la création, modification et
+édition du fichier de configuration à travers IRC
+-Ajout d'un fichier de log
+-Ecriture d'un CHANGELOG.TXT
+-Ecriture d'un README.TXT
+
+Pré-2.0
+-Aucune trace de l'évolution du projet avant la 2.0
+-Moins de 5% du code en commun entre la dernière
+version pré-2.0 et la 2.0
+-Multiples modules déjà existant partiellement,
+mais harcodé dans le bot

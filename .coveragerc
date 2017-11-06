@@ -1,0 +1,9 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+source = /home/harrygiel/bot
+omit = /home/harrygiel/bot/core/irclib.py
+       /home/harrygiel/bot/core/ircbot.py
+
+[xml]
+output = coverage/coverage.xml

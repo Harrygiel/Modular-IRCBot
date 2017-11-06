@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<botConf>
+    <botName>BotName</botName>
+    <admin mask="Pseudoname!~realname@host" />
+    <module name="Youtube" activated="true">
+      <call>youtu</call>
+    </module>
+    <module name="Dictionary" activated="true">
+      <call>!dictionary</call>
+      <call>!dict</call>
+      <call>!dico</call>
+    </module>
+    <module name="Horoscope" activated="true">
+      <call>!horoscope</call>
+    </module>
+    <module name="Help" activated="true">
+      <call>!help</call>
+    </module>
+    <module name="Love" activated="true">
+      <call>!love</call>
+    </module>
+    <module name="Oracle" activated="true">
+      <call>!oracle</call>
+    </module>
+    <module name="Ko" activated="true">
+      <call>!ko</call>
+    </module>
+    <module name="Cafe" activated="true">
+      <call>!cafe</call>
+    </module>
+    <module name="Amour" activated="true">
+      <call>!amour</call>
+    </module>
+
+  <server name="Log name" url="irc.url.com" port="6667">
+    <botName>BotName</botName>
+      <admin mask="Pseudoname!~realname@host" />
+    <salon name="#channel">
+      <admin mask="Pseudoname!~realname@host" />
+      <module name="Youtube" activated="false" />
+    </salon>
+  </server>
+</botConf>
