@@ -1,16 +1,16 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
 Copyright (C) Harrygiel - All Rights Reserved
 Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
 
-Chamot V2.0
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
 """
-
-from __future__ import unicode_literals
 
 import sys, threading, imp
 
@@ -43,7 +43,7 @@ class Worker(threading.Thread):
         print("" + self.name + " called every module and is ready to serve !")
         while self.is_running:
             self.callEvent.wait()
-            for module_object in self.module_dict.itervalues():
+            for module_object in self.module_dict.values():
                 for call_text in module_object.call_set:
                     if call_text in self.argument[1]:
                         module_object.argument = self.argument
@@ -52,17 +52,17 @@ class Worker(threading.Thread):
 
     def stop(self):
         self.is_running = False
-        for module_object in self.module_dict.itervalues():
+        for module_object in self.module_dict.values():
             module_object.stop()
         self.callEvent.set()
 
     def update_module_list(self):
-     for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
-        module_name = module_node.get("name")
-        if MCS.is_module_globally_activated(module_name, self.node):
-            self.start_module(module_node)
-        else:
-            self.stop_module(module_node.get("name"))
+        for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
+            module_name = module_node.get("name")
+            if MCS.is_module_globally_activated(module_name, self.node):
+                self.start_module(module_node)
+            else:
+                self.stop_module(module_node.get("name"))
 
     def start_module(self, module_node):
         try:

@@ -1,0 +1,38 @@
+!admin connect #testground2
+!admin connect #testground3
+!admin start Dictionary #testground2
+!admin start Youtube #testground2
+!admin addAdmin Harrytest!~Harrygiel@EpiK-6BCAEA62.tk 5  #testground2
+/nick Harrytest
+!admin addAdmin Harrytest!~Harrygiel@EpiK-6BCAEA62.tk 10 #testground2
+/nick Harrygiel
+!admin dump
+!admin delAdmin Harrytest!~Harrygiel@EpiK-6BCAEA62.tk #testground2
+!admin disconnect #testground3
+!admin reloadModule
+
+###################################################################
+
+!help
+!love
+!love 1
+!love 1 2
+!love 1 2 3
+!dictionary blé
+!dictionary ble
+!dictionary norealword
+!horoscope Vièrge
+!horoscope Vierge
+!horoscope vierge
+!horoscope novierge
+!oracle 1
+!ko 1
+!cafe
+!cafe 1
+https://www.youtube.com/watch?v=71ogR-3rxy0&list=RD71ogR-3rxy0
+https://www.youtube.com/watch?v=71ogR-3r0&list=RD71o-3rxy0
+!amour 1
+
+###################################################################
+
+!admin saveConf test.xml

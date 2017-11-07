@@ -1,13 +1,17 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
-Chamot V2.0
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
+
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Help Module
 
 Creator: Harrygiel
 """
 
-from __future__ import unicode_literals
 import sys
 
 sys.path.append('module')
@@ -25,7 +29,7 @@ class Help(BotModule):
         target = self.argument[2]
 
         command_list = ""
-        for module_name, module_object in self.parent.module_dict.iteritems():
+        for module_name, module_object in self.parent.module_dict.items():
             if len(module_object.call_set) > 0 and list(module_object.call_set)[0][0].isalnum() is False:
                 command_list = command_list + list(module_object.call_set)[0] + " "
             else:

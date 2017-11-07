@@ -1,7 +1,12 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
-Chamot V2.0
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
+
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Love Module
 
 Creator: Harrygiel

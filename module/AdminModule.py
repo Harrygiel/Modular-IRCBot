@@ -1,16 +1,16 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf8
 """
 Copyright (C) Harrygiel - All Rights Reserved
 Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
 
-Chamot V2.0
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Administrator Module Class
 
 Creator: Harrygiel
 """
-
-from __future__ import unicode_literals
 
 import sys, threading
 from lxml import etree
@@ -39,21 +39,26 @@ class AdminModule(threading.Thread):
         return
 
     def _main(self):
-        """ Method: module loop waiting for module event """
+        """ Method: module loop waiting for module event
+        WARNING: is_user_globally_admin already look if 
+        you are trying to get upper right than your 
+        current position but not looking level right"""
         MCS.append_log("Module Started")
         while self.is_running:
             self.callEvent.wait()
 
             splited_msg = self.argument[1].split()
             splited_msg = [argument for argument in splited_msg if argument != ""]
-            base_node = MCS.get_first_existing_node_by_channel_name(self.parent.url, splited_msg[len(splited_msg)-1])
-            admin_parent_node = MCS.is_user_globally_admin(self.argument[0], base_node[0])
-            if admin_parent_node is not False:
+            node_name = splited_msg[len(splited_msg)-1]
+
+            base_node = MCS.get_first_existing_node_by_channel_name(self.parent.url, node_name)
+            admin_node = MCS.is_user_globally_admin(self.argument[0], base_node[0])
+            if admin_node is not False:
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
-                self.execute_admin_order(self.argument[1], admin_parent_node)
+                self.execute_admin_order(self.argument[1], admin_node)
             else:
-                MCS.append_log(self.argument[0] + "tried to call: " + self.argument[1])
-                print("Not an admin")
+                MCS.append_log(self.argument[0] + "tried to call: " + self.argument[1] + " but wasn't admin")
+                self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + self.argument[0] + " is not admin from " + node_name + " or upper!")
 
             self.callEvent.clear()
         return
@@ -62,7 +67,7 @@ class AdminModule(threading.Thread):
         self.is_running = False
         self.callEvent.set()
 
-    def execute_admin_order(self, msg, admin_parent_node):
+    def execute_admin_order(self, msg, admin_node):
         """ Method: execute when the module event is raised and every prerequist are met """
         splited_msg = msg.split(" ")
         splited_msg = [argument for argument in splited_msg if argument != ""]
@@ -79,11 +84,11 @@ class AdminModule(threading.Thread):
         elif msg.startswith("!admin stop") and self.command_checker(splited_msg, 4, "!admin stop <module> <channel>"):
             self.change_module_node_state(splited_msg[2], splited_msg[3], "false")
 
-        elif msg.startswith("!admin addAdmin") and self.command_checker(splited_msg, 4, "!admin addAdmin <pseudo!~realname@host> <channel>"):
-            self.change_admin_level(splited_msg[2], splited_msg[3], "1")
+        elif msg.startswith("!admin addAdmin") and self.command_checker(splited_msg, 5, "!admin addAdmin <pseudo!~realname@host> <level> <channel>"):
+            self.change_admin_level(splited_msg[2], splited_msg[4], splited_msg[3], admin_node.get("level"))
 
         elif msg.startswith("!admin delAdmin") and self.command_checker(splited_msg, 4, "!admin delAdmin <pseudo!~realname@host> <channel>"):
-            self.change_admin_level(splited_msg[2], splited_msg[3], "0")
+            self.change_admin_level(splited_msg[2], splited_msg[3], "0", admin_node.get("level"))
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):
             MCS.set_save_conf(splited_msg[2])
@@ -111,7 +116,7 @@ class AdminModule(threading.Thread):
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Already on the channel " + channel_name + " !")
         else:
             new_channel_node = MCS.get_new_channel_node(channel_name)
-            MCS.botConfObject.xpath("server[@url='" + self.parent.url + "'] ")[0].append(new_channel_node)################################# NOT APPENDING: OUT OF RANGE
+            MCS.botConfObject.xpath("server[@url='" + self.parent.url + "'] ")[0].append(new_channel_node)
             MCS.append_log(self.parent.nickname + " connected to: " + channel_name)
             self.parent.join_chan(new_channel_node)
 
@@ -146,8 +151,15 @@ class AdminModule(threading.Thread):
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + module_name + " not changed to: " + state + " !")
 
 
-    def change_admin_level(self, admin_mask, node_name, level):
+    def change_admin_level(self, admin_mask, node_name, level, sender_level):
         """ Method: change admin state in node_name """
+        if not level.isnumeric():
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + level + " is not numeric !")
+            return False
+        elif int(level) >= int(sender_level):
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + level + " is highter than your level (" + sender_level + ") !")
+            return False
+
         is_changed = False
         admin_root_xpath = MCS.get_node_root_path(node_name, self)
         if admin_root_xpath is not False:

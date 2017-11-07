@@ -1,16 +1,19 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
-Chamot V2.0
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
+
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Dictionary Module
 
 Creator: Harrygiel
 """
 
-from __future__ import unicode_literals
-
 import sys, requests
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 sys.path.append('module')
 from BotModule import BotModule
@@ -36,7 +39,7 @@ class Dictionary(BotModule):
         if page.status_code >= 300:
             self.c.privmsg(target, "Un problème est survenu en tentant d'acceder au site larousse. Contactez Harrygiel")
 
-        soup = BeautifulSoup(page.text, convertEntities=BeautifulSoup.HTML_ENTITIES)
+        soup = BeautifulSoup(page.text, "lxml")
         definition_array = soup.findAll("li", {"class" : "DivisionDefinition"})
         if len(definition_array) > 0 and definition_array[0].find(text=True) != None:
             definition_text = definition_array[0].find(text=True)

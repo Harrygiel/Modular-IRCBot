@@ -1,16 +1,16 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
 Copyright (C) Harrygiel - All Rights Reserved
 Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
 
-Chamot V2.0
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Generic Module Class
 
 Creator: Harrygiel
 """
-
-from __future__ import unicode_literals
 
 import threading, sys
 
@@ -27,7 +27,7 @@ class BotModule(threading.Thread):
         self.module_name = default_module_node.get("name")
         self.name = parent.name + "/" + self.module_name
         self.is_running = True
-        self.call_set = self.get_call_set(default_module_node, parent.node)
+        self.call_set = self.get_call_set(parent.node)
         self.thread = None
         self.argument = ["", "", ""]
 
@@ -66,8 +66,8 @@ class BotModule(threading.Thread):
                     return True
         return False
 
-    def get_call_set(self, default_module_node, channel_node):
-        """ Method: get a set of string who will call the module if found in a message 
+    def get_call_set(self, channel_node):
+        """ Method: get a set of string who will call the module if found in a message
         look in chan, then server, then global module conf"""
         call_set = set()
         module_call_path = "module[@name='" + self.module_name + "']/call"

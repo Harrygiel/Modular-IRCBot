@@ -1,16 +1,19 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
-Chamot V2.0
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
+
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 Youtube Module
 
 Creator: Harrygiel
 """
 
-from __future__ import unicode_literals
-
 import sys, re, urllib
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 sys.path.append('module')
 from BotModule import BotModule
@@ -28,7 +31,7 @@ class Youtube(BotModule):
             my_link = re.search(raw_regexp, msg)
             if my_link is not None:
                 url = urllib.urlopen(my_link.group(0)).read().decode('utf-8')
-                soup = BeautifulSoup(url, convertEntities=BeautifulSoup.HTML_ENTITIES)
+                soup = BeautifulSoup(url, "lxml")
                 my_title = soup.find(id="eow-title")
                 if my_title is not None:
                     my_title = my_title.find(text=True)

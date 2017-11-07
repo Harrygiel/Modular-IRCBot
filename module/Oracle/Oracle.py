@@ -1,11 +1,13 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
 Copyright (C) Harrygiel - All Rights Reserved
 Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
 
-Chamot V2.0
-Oracle Module
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
+Cafe Module
 
 Creator: Harrygiel
 """
@@ -33,7 +35,7 @@ class Oracle(BotModule):
         answer_list = ["Oui",
                        "Non",
                        "Peut être",
-                       "Désolé, je n'ai pas le temps pour des questions si futile !",
+                       "Désolé, je n'ai pas le temps pour des questions si futiles !",
                        "Ce n'est pas impossible ..."]
         random_choice = random.randint(0, len(answer_list)-1)
         self.c.privmsg(target, "" + answer_list[random_choice])

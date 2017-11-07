@@ -1,16 +1,17 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
 Copyright (C) Harrygiel - All Rights Reserved
 Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
 
-Chamot V2.0
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 The core of the module system: look for module, activate or desactivate them, etc...
 
 Creator: Harrygiel
 """
 
-from __future__ import unicode_literals
 import os.path, datetime, threading
 from lxml import etree
 
@@ -41,15 +42,16 @@ def is_module_locally_activated(module_node):
 def is_user_globally_admin(user_name, conf_node):
     """ Function: is the module activated in the XML Tree """
     root_node = conf_node
+    return_node = False
     while root_node != None:
         admin_nodes = root_node.xpath("admin")
         if len(admin_nodes) > 0:
             for admin_node in admin_nodes:
                 if is_user_locally_admin(user_name, admin_node):
-                    return root_node
+                    return_node = admin_node
         root_node = root_node.getparent()
 
-    return False
+    return return_node
 
 def is_user_locally_admin(user_name, admin_node):
     """ Function: is the module activated in the XML Node """
@@ -112,13 +114,21 @@ def get_new_admin_node(admin_mask, level):
     module_node.set('level', level)
     return module_node
 
+def node_depth(node):
+    """ Function: get node depth """
+    d = 0
+    while node is not None:
+        d += 1
+        node = node.getparent()
+    return d
+
 def set_save_conf(conf_file_name):
     """ Function: save configuration file as conf_file_name """
     try:
         if conf_file_name[0] != "/" and not ".." in conf_file_name:
             with conf_lock:
-                output_file = open(os.path.abspath(os.curdir) + "/conf/" + conf_file_name, 'w')
-                botConfObject.write(output_file, pretty_print=True)
+                output_file = open(os.path.abspath(os.curdir) + "/conf/" + conf_file_name, 'wb')
+                output_file.write(etree.tostring(botConfObject, pretty_print=True))
                 output_file.close()
             return True
         else:
@@ -132,10 +142,10 @@ def set_save_conf(conf_file_name):
 def append_log(log_line):
     """ Function: append a line in the log. Thread safe """
     try:
-        bot_nickname =botConfObject.xpath(DEFAULTCONFPATH + "/botName")[0].text
+        bot_nickname =botConfObject.xpath(DEFAULTCONFPATH + "/botinfo")[0].get("name")
         with log_lock:
             output_file = open(os.path.abspath(os.curdir) + "/log/" + bot_nickname + ".log", 'a+')
-            output_file.write(str(datetime.datetime.now()) +": [" + threading.current_thread().name + "] " + log_line + "\r\n")
+            output_file.write(str(datetime.datetime.now()) + ": [" + threading.current_thread().name + "] " + log_line + "\r\n")
             output_file.close()
         return True
     except IOError:
@@ -172,7 +182,7 @@ def change_admin_node_level(admin_nodes, level):
         print("[" + threading.current_thread().name + "] Admin already level: " + level + " !")
         return False
     else:
-        if level != "0":
+        if int(level) > 0:
             admin_nodes.set('level', level)
             print("[" + threading.current_thread().name + "] Admin now level: " + level + " !")
         else:
@@ -188,10 +198,10 @@ def change_admin_level(range_xpath_expr, admin_mask, level):
         if len(admin_nodes) > 0:
             return change_admin_node_level(admin_nodes[0], level)
         else:
-            if level != "0":
+            if int(level) > 0:
                 range_nodes[0].insert(0, get_new_admin_node(admin_mask, level))
             else:
-                print("[" + threading.current_thread().name + "] Already level 0")
+                print("[" + threading.current_thread().name + "] Already level 0 or under")
             return True
     else:
         print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")

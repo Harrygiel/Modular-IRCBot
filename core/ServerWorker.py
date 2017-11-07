@@ -1,29 +1,30 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf8
 """
-Chamot V2.0
+Copyright (C) Harrygiel - All Rights Reserved
+Unauthorized use of this file or any file from this project, via any medium is strictly prohibited
+
+Seriously guys, you just have to ask, I want to know who will use this.
+
+Chamot V2.1
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
 """
 
-from __future__ import unicode_literals
-
 import sys, time, threading, time
 import irc.bot, irc.strings
-from jaraco.stream import buffer as jaraco_buffer
 
 sys.path.append('core')
 import ChannelWorker
 from module.AdminModule import AdminModule
 
-irc.client.ServerConnection.buffer_class = jaraco_buffer.LenientDecodingLineBuffer
-
 class Worker(irc.bot.SingleServerIRCBot):
     """ Class: ServerWorker Class """
     def __init__(self, server_node):
         self.url = server_node.get("url")
-        self.nickname = server_node.xpath("botName")[0].text
+        self.nickname = server_node.xpath("botinfo")[0].get("name")
+        self.password = server_node.xpath("botinfo")[0].get("password")
         self.server_node = server_node
         self.channel_dict = {}
         self.admin_module_object = AdminModule(self)
@@ -39,7 +40,7 @@ class Worker(irc.bot.SingleServerIRCBot):
 
 
     def stop(self):
-        for channel_object in self.channel_dict.itervalues():
+        for channel_object in self.channel_dict.values():
             channel_object.stop()
         self.die()
 
@@ -57,7 +58,7 @@ class Worker(irc.bot.SingleServerIRCBot):
         for channel in self.server_node.xpath("salon"):
             self.join_chan(channel)
         time.sleep(1)
-        self.c.privmsg("Themis", u"IDENTIFY ****")
+        self.c.privmsg("Themis", u"IDENTIFY " + self.password)
         c.mode("Chamot", "+B")
         print("[" + self.url + "] identified as " + self.nickname + " and as a bot")
 
@@ -71,20 +72,21 @@ class Worker(irc.bot.SingleServerIRCBot):
             self.admin_module_object.callEvent.set()
             return None
 
-        for channel_name, channel_object in self.channel_dict.iteritems():
+        for channel_name, channel_object in self.channel_dict.items():
             if channel_name.lower() in e.arguments[0]:
                 channel_object.argument = [e.source, e.arguments[0], channel_name.lower()]
                 channel_object.callEvent.set()
 
     def on_pubmsg(self, c, e):
         del c
-        for channel_name, channel_object in self.channel_dict.iteritems():
+        for channel_name, channel_object in self.channel_dict.items():
             if channel_name == e.target:
                 channel_object.argument = [e.source, e.arguments[0], e.target]
                 channel_object.callEvent.set()
 
     def on_kick(self, c, e):
-        del c, e
+        self.c.join(e.target)
+        del c
 
     def join_chan(self, channel_node):
         channel_worker_object = ChannelWorker.Worker(self.c, channel_node, self)
@@ -97,5 +99,5 @@ class Worker(irc.bot.SingleServerIRCBot):
         self.c.part(channel_name)
 
     def update_module_list(self):
-        for channel_object in self.channel_dict.itervalues():
+        for channel_object in self.channel_dict.values():
             channel_object.update_module_list()
