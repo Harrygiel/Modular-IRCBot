@@ -25,7 +25,8 @@ class Worker(threading.Thread):
         self.c = c
         self.parent = parent
         self.node = channel_node
-        self.name = parent.url + "/" + self.node.get("name")
+        self.channel_name = self.node.get("name")
+        self.name = parent.url + "/" + self.channel_name
         self.is_running = True
         self.module_dict = {}
         self.thread = None
@@ -36,24 +37,26 @@ class Worker(threading.Thread):
         self.update_module_list()
 
     def run(self):
-        self.thread = threading.Thread(target=self._main)
+        self.thread = threading.Thread(target=self._main, name=self.name)
         self.thread.start()
 
     def _main(self):
-        print("" + self.name + " called every module and is ready to serve !")
+        MCS.append_log(self.name + " started")
         while self.is_running:
             self.callEvent.wait()
-            for module_object in self.module_dict.values():
-                for call_text in module_object.call_set:
-                    if call_text in self.argument[1]:
-                        module_object.argument = self.argument
-                        module_object.callEvent.set()
+            if self.is_running:
+                for module_object in self.module_dict.values():
+                    for call_text in module_object.call_set:
+                        if call_text in self.argument[1]:
+                            module_object.argument = self.argument
+                            module_object.callEvent.set()
             self.callEvent.clear()
 
     def stop(self):
         self.is_running = False
         for module_object in self.module_dict.values():
             module_object.stop()
+        MCS.append_log(self.name + " stopped")
         self.callEvent.set()
 
     def update_module_list(self):

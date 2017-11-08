@@ -12,7 +12,7 @@ Youtube Module
 Creator: Harrygiel
 """
 
-import sys, re, urllib
+import sys, re, requests
 from bs4 import BeautifulSoup
 
 sys.path.append('module')
@@ -30,8 +30,9 @@ class Youtube(BotModule):
             raw_regexp = r'http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&amp;?[\w\?=]*)?'
             my_link = re.search(raw_regexp, msg)
             if my_link is not None:
-                url = urllib.urlopen(my_link.group(0)).read().decode('utf-8')
-                soup = BeautifulSoup(url, "lxml")
+                headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+                page = requests.get(my_link.group(0), headers=headers)
+                soup = BeautifulSoup(page.text, "lxml")
                 my_title = soup.find(id="eow-title")
                 if my_title is not None:
                     my_title = my_title.find(text=True)

@@ -42,7 +42,8 @@ class BotModule(threading.Thread):
         MCS.append_log("Module Started")
         while self.is_running:
             self.callEvent.wait()
-            if self.argument[0] is not None:
+            if self.is_running:
+                MCS.append_log(self.name + " called by " + self.argument[2] + "with: " + self.argument[1])
                 self.call_handle()
             self.callEvent.clear()
         return
@@ -54,7 +55,6 @@ class BotModule(threading.Thread):
     def stop(self):
         MCS.append_log("Module Stopped")
         self.is_running = False
-        self.argument = [None, None, None]
         self.callEvent.set()
 
     def start_with_call_set(self):

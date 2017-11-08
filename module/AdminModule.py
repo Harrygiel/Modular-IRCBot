@@ -34,7 +34,7 @@ class AdminModule(threading.Thread):
     def run(self, c):
         """ Method: start the module thread """
         self.c = c
-        self.thread = threading.Thread(target=self._main)
+        self.thread = threading.Thread(target=self._main, name=self.name)
         self.thread.start()
         return
 
@@ -57,7 +57,7 @@ class AdminModule(threading.Thread):
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
                 self.execute_admin_order(self.argument[1], admin_node)
             else:
-                MCS.append_log(self.argument[0] + "tried to call: " + self.argument[1] + " but wasn't admin")
+                MCS.append_log(self.argument[0] + " tried to call: " + self.argument[1] + " but wasn't admin")
                 self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + self.argument[0] + " is not admin from " + node_name + " or upper!")
 
             self.callEvent.clear()
@@ -92,6 +92,9 @@ class AdminModule(threading.Thread):
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):
             MCS.set_save_conf(splited_msg[2])
+
+        elif msg.startswith("!admin list") and self.command_checker(splited_msg, 4, "!admin list <info> <channel>"):
+            self.list_info(splited_msg[2], splited_msg[3]) ################# EN COURS DE CREATION
 
         elif msg.startswith("!admin dump") and self.command_checker(splited_msg, 2, "!admin dump"):
             self.dump_xml()
@@ -150,6 +153,25 @@ class AdminModule(threading.Thread):
         else:
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + module_name + " not changed to: " + state + " !")
 
+
+    def list_info(self, info_name, node_name):
+        node_root_xpath = MCS.get_node_root_path(node_name, self)
+        if info_name == "admin":
+            node_root_xpath = node_root_xpath + "/admin"
+            node_list = MCS.botConfObject.xpath(node_root_xpath)
+            if len(node_list) >0:
+                for node in node_list:
+                    self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Admin: " + node.get("mask") + " is level: " + node.get("level"))
+
+        elif info_name == "module":
+            node_root_xpath = node_root_xpath + "/module"
+            node_list = MCS.botConfObject.xpath(node_root_xpath)
+            if len(node_list) >0:
+                for node in node_list:
+                    self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Module: " + node.get("name") + " is at state: " + node.get("activated"))
+        else:
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Info: " + info_name + " unknown !")
+            return
 
     def change_admin_level(self, admin_mask, node_name, level, sender_level):
         """ Method: change admin state in node_name """

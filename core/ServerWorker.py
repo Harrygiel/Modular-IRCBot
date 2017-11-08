@@ -17,6 +17,7 @@ import irc.bot, irc.strings
 
 sys.path.append('core')
 import ChannelWorker
+import ModuleCoreSystem as MCS
 from module.AdminModule import AdminModule
 
 import JaracoBuffer as buffer
@@ -36,6 +37,7 @@ class Worker(irc.bot.SingleServerIRCBot):
         irc.bot.SingleServerIRCBot.__init__(self, [(self.url, int(server_node.get("port")))], self.nickname, self.nickname)
 
     def run(self):
+        MCS.append_log(self.url + " started")
         self.thread.start()
 
     def _main(self):
@@ -45,6 +47,7 @@ class Worker(irc.bot.SingleServerIRCBot):
     def stop(self):
         for channel_object in self.channel_dict.values():
             channel_object.stop()
+        MCS.append_log(self.url + " stopped")
         self.die()
 
     def on_nicknameinuse(self, c, e):
@@ -88,6 +91,7 @@ class Worker(irc.bot.SingleServerIRCBot):
                 channel_object.callEvent.set()
 
     def on_kick(self, c, e):
+        MCS.append_log(self.url + " : kicked from " + e.target + " by " + e.source)
         self.c.join(e.target)
         del c
 
