@@ -149,66 +149,71 @@ A: Wow seriously ? What a powerful bot. No seriously you where prevented that it
 
 ## Changelog
 
+* V2.1.1
+
+- Corrected Buffer error when the message recieved
+was not in UTF-8
+- Corrected README.TXT for GitHub display
+
 * V2.1
 
--Update from python 2.7 to python 3.5.3
--Better and more complete README.TXT
+- Project added on github
+- Update from python 2.7 to python 3.5.3
+- Bot now auto reconnect from disconnect and kick
+- Added login info in XML
+- Add basic admin level
+- Better and more complete README.TXT
 
 * V2.0
 
--Force every string as UTF-8 with: from __future__ import unicode_literals
--Complete rework: New version using threading insteand of a linear script 
--SIGINT signal working and cleanly stop the bot
--Pyramidal management of administrator in configuration
--Pyramidal management of module call string in configuration
--Configuration file nearlly fully controled by private message with the bot
--Added log system
--Creation of CHANGELOG.TXT
--Creation of README.TXT
+- Force every string as UTF- 8 with: from __future__ import unicode_literals
+- Complete rework: New version using threading insteand of a linear script 
+- SIGINT signal working and cleanly stop the bot
+- Pyramidal management of administrator in configuration
+- Pyramidal management of module call string in configuration
+- Configuration file nearlly fully controled by private message with the bot
+- Added log system
+- Creation of CHANGELOG.TXT
+- Creation of README.TXT
 
-* Before 2.0
+* Before
 
--no history from before 2.0
--Less than 5% of the code from pré-2.0 used for the 2.0 version
--Module idea already used but hardcoded in the bot script
+See Changelog
 
 ## To Do
 
 From 0 (least important) to 5 (most important)
-													(priority)
--Seen, Spotify, deezer and co modules 					0
--Add Nose to the cover project							0
--Add warning possibility for desactivated modules 		1
--Clear every code smell from sonarQube					1
--Add Schedule event possibility							2
--Comment channel node on disconnection to keep conf		2
--Allow bot name to be changed (code AND /nick)			2
--Send PV message at user connexion (remember)			2
--Allow load by name, and not only if in defaultconf		2
-(useful to load a module without restarting)			
--Allow regexp in admin mask								3
--Allow use of official admin from channel				3
--Act from bash as superadmin							3
--Add more things to logs 								4
--Rename every thread in init to correct logs			4
--Allow configuration reload for super-admin				4
--Auto fix and analysis									4
--Allow admin to list every module						4
--Allow admin to list every admin						4
--Add Blacklist											4
--Auto check running module and reboot it in case		4
-of crash												
--Auto reconnect (every case)							5
--Add on github											5
--Add login info in XML									5
--Add admin level (we don't want a new admin to 			5
-kick CA)
+                                                      (priority)
+- Seen, Spotify, deezer and co modules                     0
+- Add Nose to the cover project                            0
+- Add warning possibility for desactivated modules         1
+- Clear every code smell                                   1
+- Add Schedule event possibility                           2
+- Comment channel node on disconnection to keep conf       2
+- Allow bot name to be changed (code AND /nick)            2
+- Send PV message at user connexion (remember)             2
+- Allow load by name, and not only if in defaultconf       2
+(useful to load a module without restarting)            
+- Allow regexp in admin mask                               3
+- Allow use of official admin from channel                 3
+- Act from bash as superadmin                              3
+- Add more things to logs                                  4
+- Rename every thread in init to correct logs              4
+- Allow configuration reload for super- admin              4
+- Auto fix and analysis                                    4
+- Allow admin to list every module                         4
+- Allow admin to list every admin                          4
+- Add Blacklist                                            4
+- loading module try/exept too large ?                     4
+- Auto check running module and reboot it in case          4
+of crash                                                
 
 ## Authors
 
 ### import module
 
 The IRC module is fully created by jaraco and contributors at https://github.com/jaraco/irc
+The buffer module is fully created by jaraco and contributors at https://github.com/jaraco/jaraco.stream
 
 ### Core script
 

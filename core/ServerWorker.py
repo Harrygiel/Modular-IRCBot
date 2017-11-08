@@ -19,6 +19,9 @@ sys.path.append('core')
 import ChannelWorker
 from module.AdminModule import AdminModule
 
+import JaracoBuffer as buffer
+irc.client.ServerConnection.buffer_class = buffer.LenientDecodingLineBuffer
+
 class Worker(irc.bot.SingleServerIRCBot):
     """ Class: ServerWorker Class """
     def __init__(self, server_node):
