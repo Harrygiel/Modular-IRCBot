@@ -36,54 +36,13 @@ def recursively_scan_node_info(root_node_path, node_path, node_attr, node_value,
     return return_node
 
 def locally_scan_node_info(node, node_attr, node_value):
+    """ Function: look in node if node_attr is at node_value """
     if node.get(node_attr) == node_value:
         return node
     else:
         return False
 
-
-def is_module_globally_activated(module_name, conf_node):
-    """ Function: is the module activated in the XML Tree """
-    module_path = "module[@name='" + module_name + "']"
-    root_node = conf_node
-    return_node = False
-    while root_node != None:
-        module_node = root_node.xpath(module_path)
-        if len(module_node) > 0:
-            # useful sometime: print("[MCS] Module " + module_name + u" configured in " + root_node.tag)
-            return is_module_locally_activated(module_node[0])
-        root_node = root_node.getparent()
-    return False
-
-def is_module_locally_activated(module_node):
-    """ Function: is the module activated in the XML Node """
-    if module_node.get("activated").lower() == "true":
-        return True
-    else:
-        return False
-
-def is_user_globally_admin(user_name, conf_node):
-    """ Function: is the module activated in the XML Tree """
-    root_node = conf_node
-    return_node = False
-    while root_node != None:
-        admin_nodes = root_node.xpath("admin")
-        if len(admin_nodes) > 0:
-            for admin_node in admin_nodes:
-                if is_user_locally_admin(user_name, admin_node):
-                    return_node = admin_node
-        root_node = root_node.getparent()
-
-    return return_node
-
-def is_user_locally_admin(user_name, admin_node):
-    """ Function: is the module activated in the XML Node """
-    if admin_node.get("mask") == user_name:
-        return True
-    else:
-        return False
-
-def get_first_existing_node_by_channel_name(server_url, channel_name):
+def get_first_real_root(server_url, channel_name):
     """ Function: look for a channel node.
     if the channel doesn't exist, look for the server.
     if the server doesn't exist, get the root """

@@ -40,8 +40,8 @@ class AdminModule(threading.Thread):
 
     def _main(self):
         """ Method: module loop waiting for module event
-        WARNING: is_user_globally_admin already look if 
-        you are trying to get upper right than your 
+        WARNING: recursively_scan_node_info already look
+        if you are trying to get upper right than your 
         current position but not looking level right"""
         MCS.append_log("Module Started")
         while self.is_running:
@@ -51,7 +51,10 @@ class AdminModule(threading.Thread):
             splited_msg = [argument for argument in splited_msg if argument != ""]
             node_name = splited_msg[len(splited_msg)-1]
 
-            base_node = MCS.get_first_existing_node_by_channel_name(self.parent.url, node_name)
+            base_node = MCS.get_first_real_root(self.parent.url, node_name)
+            root_node_path = MCS.botConfObject.getpath(base_node[0])
+
+            admin_node = MCS.recursively_scan_node_info(root_node_path, "admin", "mask", self.argument[0], False)
             admin_node = MCS.is_user_globally_admin(self.argument[0], base_node[0])
             if admin_node is not False:
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
@@ -84,23 +87,23 @@ class AdminModule(threading.Thread):
         elif msg.startswith("!admin stop") and self.command_checker(splited_msg, 4, "!admin stop <module> <channel>"):
             self.change_module_node_state(splited_msg[2], splited_msg[3], "false")
 
-        elif msg.startswith("!admin addAdmin") and self.command_checker(splited_msg, 5, "!admin addAdmin <pseudo!~realname@host> <level> <channel>"):
+        elif msg.startswith("!admin addAdmin") and self.command_checker(splited_msg, 5, "!admin addAdmin <pseudo!~realname@host> <level> <range>"):
             self.change_admin_level(splited_msg[2], splited_msg[4], splited_msg[3], admin_node.get("level"))
 
-        elif msg.startswith("!admin delAdmin") and self.command_checker(splited_msg, 4, "!admin delAdmin <pseudo!~realname@host> <channel>"):
+        elif msg.startswith("!admin delAdmin") and self.command_checker(splited_msg, 4, "!admin delAdmin <pseudo!~realname@host> <range>"):
             self.change_admin_level(splited_msg[2], splited_msg[3], "0", admin_node.get("level"))
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):
             MCS.set_save_conf(splited_msg[2])
 
-        elif msg.startswith("!admin list") and self.command_checker(splited_msg, 4, "!admin list <info> <channel>"):
+        elif msg.startswith("!admin list") and self.command_checker(splited_msg, 4, "!admin list <info> <range>"):
             self.list_info(splited_msg[2], splited_msg[3]) ################# EN COURS DE CREATION
 
         elif msg.startswith("!admin dump") and self.command_checker(splited_msg, 2, "!admin dump"):
             self.dump_xml()
 
-        elif msg.startswith("!admin reloadServer") and self.command_checker(splited_msg, 2, "!admin reloadServer"):
-            self.parent.update_server_node()
+        elif msg.startswith("!admin reload") and self.command_checker(splited_msg, 3, "!admin reload <range>"):
+            self.update_conf(splited_msg[2])
 
         return
 
@@ -197,6 +200,19 @@ class AdminModule(threading.Thread):
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + admin_mask + " now level: " + level + " on " + node_name)
         else:
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + admin_mask + " not changed to: " + level + " !")
+
+    def update_conf(self, range_name):
+        real_node = MCS.get_first_real_root(self.parent.url, range_name)[0]
+
+        if MCS.node_depth(real_node) == 0:
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Not working for now !")
+        elif MCS.node_depth(real_node) == 1:
+            self.parent.update_server_node()
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Server updated !")
+        elif MCS.node_depth(real_node) == 2:
+            self.parent.channel_dict[range_name].update_server_node()
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Channel updated !")
+
 
     def dump_xml(self):
         etree.dump(MCS.botConfObject.getroot())

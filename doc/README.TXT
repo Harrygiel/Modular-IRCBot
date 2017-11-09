@@ -78,34 +78,37 @@ Every module have his set of command. Every module should have a !help <module> 
 Because the bot is created for a french server, a lot of native module will have french strings. For now, no module translation is planned.
 
 The administation module is fully in english
-Here's a list of command set by the administration module, and a (french for now) description. Commands are case sensitive.
+Here's a list of command set by the administration module, and a description. Commands are case sensitive.
 
 "!admin connect <channel>":
-Permet de se connecter à un channel
+Allow channel connexion
 
 "!admin disconnect <channel>":
-Permet de se déconnecter d'un channel
+Allow channel disconnexion
 
 "!admin start <module> <channel>":
-Permet d'ajouter un module à un channel
+Add a module to the said channel
 
 "!admin stop <module> <channel>":
-Permet de retirer un module à un channel
+Remove a module to the said channel
 
-"!admin addAdmin <pseudo!~realname@host> <channel>":
-Permet d'ajouter un mask (COMPLET) en tant qu'admin d'un channel
+"!admin addAdmin <pseudo!~realname@host> <level> <range>":
+Add an (COMPLETE) admin mask on the said range at the said level (if level = 0, remove the admin)
 
-"!admin delAdmin <pseudo!~realname@host> <channel>":
-Permet de retirer un mask (COMPLET) en tant qu'admin d'un channel
+"!admin delAdmin <pseudo!~realname@host> <range>":
+Remove an (COMPLETE) admin mask on the said range at the said level
 
 "!admin saveConf <xml_file>":
-Permet de sauvegarder la configuration actuel du bot. ATTENTION: cette configuration peut ecraser la configuration précédente !
+Allow to save the bot configuration as a file WARNING, you can erease the actual configuration file !
+
+"!admin list <info> <range>"
+Allow an admin to get an infomation about the said range
 
 "!admin dump":
-Permet d'afficher le XML sans le sauvegarder dans la console
+Print the full configuration IN MEMORY to the bash
 
-"!admin reloadModule":
-Permet de recharger tous les modules en fonction de la configuration EN MEMOIRE
+"!admin reload <range>":
+Alow to reload everything under the said range (servers, channels, modules)
 
 #### Adding a module
 
@@ -149,6 +152,20 @@ A: Wow seriously ? What a powerful bot. No seriously you where prevented that it
 
 ## Changelog
 
+########   V2.1.2
+
+- Corrected Youtube module urllib problem by
+using request instead (1 less module to import)
+- More call to log
+- Every thread now have a unique name linked to
+his position in the configuration
+- Admin are now able to list module and admin in
+a node
+- Created a general lib function to check for
+info recursively: recursively_scan_node_info
+- Replaced is_module_globally_activated and
+is_user_globally_admin by the new general function
+
 * V2.1.1
 
 - Corrected Buffer error when the message recieved
@@ -164,18 +181,6 @@ was not in UTF-8
 - Add basic admin level
 - Better and more complete README.TXT
 
-* V2.0
-
-- Force every string as UTF- 8 with: from __future__ import unicode_literals
-- Complete rework: New version using threading insteand of a linear script 
-- SIGINT signal working and cleanly stop the bot
-- Pyramidal management of administrator in configuration
-- Pyramidal management of module call string in configuration
-- Configuration file nearlly fully controled by private message with the bot
-- Added log system
-- Creation of CHANGELOG.TXT
-- Creation of README.TXT
-
 * Before
 
 See Changelog
@@ -188,25 +193,25 @@ From 0 (least important) to 5 (most important)
 - Add Nose to the cover project                            0
 - Add warning possibility for desactivated modules         1
 - Clear every code smell                                   1
+- Allow start module only if module exist                  1
+- Allow admin to list every module recursively             1
+- Allow admin to list every admin recursively              1
+- Allow configuration reload from file                     1
+- Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
 - Allow bot name to be changed (code AND /nick)            2
 - Send PV message at user connexion (remember)             2
-- Allow load by name, and not only if in defaultconf       2
-(useful to load a module without restarting)            
+- Allow load by name, and not only if in defaultconf        
+(useful to load a module without restarting)               2
 - Allow regexp in admin mask                               3
 - Allow use of official admin from channel                 3
 - Act from bash as superadmin                              3
-- Add more things to logs                                  4
-- Rename every thread in init to correct logs              4
-- Allow configuration reload for super- admin              4
+- Module: Protect from mass AND flood HL                   3
+- Add Blacklist                                            3
+- Auto check running module and reboot it in case          
+of crash                                                   4
 - Auto fix and analysis                                    4
-- Allow admin to list every module                         4
-- Allow admin to list every admin                          4
-- Add Blacklist                                            4
-- loading module try/exept too large ?                     4
-- Auto check running module and reboot it in case          4
-of crash                                                
 
 ## Authors
 

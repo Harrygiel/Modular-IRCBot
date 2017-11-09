@@ -24,22 +24,14 @@ AUTHOR: Harrygiel
 - Send PV message at user connexion (remember)             2
 - Allow load by name, and not only if in defaultconf        
 (useful to load a module without restarting)               2
-- Try to do a global recursive function in MCS
-(linked to module and admin recursive implemented)         3
 - Allow regexp in admin mask                               3
 - Allow use of official admin from channel                 3
 - Act from bash as superadmin                              3
 - Module: Protect from mass AND flood HL                   3
 - Add Blacklist                                            3
-- Add more things to logs                                  4 (Done)
-- Rename every thread in init to correct logs              4 (Done)
 - Auto check running module and reboot it in case          
 of crash                                                   4
 - Auto fix and analysis                                    4
-- Allow configuration reload for super-admin               4 (Done at server level)
-- Allow admin to list every module                         4 (Done)
-- Allow admin to list every admin                          4 (Done)
-- loading module try/exept too large ?                     4 (Done)
 
 ################    CHANGELOG     ################
 
@@ -52,6 +44,10 @@ using request instead (1 less module to import)
 his position in the configuration
 - Admin are now able to list module and admin in
 a node
+- Created a general lib function to check for
+info recursively: recursively_scan_node_info
+- Replaced is_module_globally_activated and
+is_user_globally_admin by the new general function
 
 ########   V2.1.1
 
