@@ -31,6 +31,9 @@
     <module name="Amour" activated="true">
       <call>!amour</call>
     </module>
+    <module name="Biere" activated="true">
+      <call>!biere</call>
+    </module>
 
   <server name="Log name" url="irc.url.com" port="6667">
     <botinfo name="BotName" password="********" />
