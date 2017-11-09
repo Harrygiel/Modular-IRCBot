@@ -35,6 +35,13 @@ of crash                                                   4
 
 ################    CHANGELOG     ################
 
+########   V2.1.3
+
+- Add native module:
+   * the
+   * chocolat
+   * cigarette
+   * baffe
 ########   V2.1.2
 
 - Corrected Youtube module urllib problem by
