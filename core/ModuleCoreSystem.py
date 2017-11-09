@@ -20,10 +20,33 @@ conf_lock = threading.Lock()
 log_lock = threading.Lock()
 DEFAULTCONFPATH = "/botConf"
 
+def recursively_scan_node_info(root_node_path, node_path, node_attr, node_value, stop_if_found):
+    """ Function: recursively look in XML Tree if node_attr is at node_value """
+    root_node = botConfObject.xpath(root_node_path)[0]
+    return_node = False
+    while root_node != None:
+        node = root_node.xpath(node_path)
+        if len(node) > 0:
+            node = node[0]
+            if stop_if_found:
+                return locally_scan_node_info(node, node_attr, node_value)
+            else:
+                return_node = locally_scan_node_info(node, node_attr, node_value)
+        root_node = root_node.getparent()
+    return return_node
+
+def locally_scan_node_info(node, node_attr, node_value):
+    if node.get(node_attr) == node_value:
+        return node
+    else:
+        return False
+
+
 def is_module_globally_activated(module_name, conf_node):
     """ Function: is the module activated in the XML Tree """
     module_path = "module[@name='" + module_name + "']"
     root_node = conf_node
+    return_node = False
     while root_node != None:
         module_node = root_node.xpath(module_path)
         if len(module_node) > 0:

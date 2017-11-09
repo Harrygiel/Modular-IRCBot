@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <botConf>
-    <botName>BotName</botName>
-    <admin mask="Pseudoname!~realname@host" />
+    <botinfo name="BotName" password="********" />
+    <admin mask="Pseudoname!~realname@host"  level="10"/>
     <module name="Youtube" activated="true">
       <call>youtu</call>
     </module>
@@ -33,10 +33,10 @@
     </module>
 
   <server name="Log name" url="irc.url.com" port="6667">
-    <botName>BotName</botName>
-      <admin mask="Pseudoname!~realname@host" />
+    <botinfo name="BotName" password="********" />
+      <admin mask="Pseudoname!~realname@host"  level="5"/>
     <salon name="#channel">
-      <admin mask="Pseudoname!~realname@host" />
+      <admin mask="Pseudoname!~realname@host"  level="2"/>
       <module name="Youtube" activated="false" />
     </salon>
   </server>

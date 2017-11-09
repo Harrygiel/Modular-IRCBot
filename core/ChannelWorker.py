@@ -60,9 +60,10 @@ class Worker(threading.Thread):
         self.callEvent.set()
 
     def update_module_list(self):
+        channel_path = MCS.botConfObject.getpath(self.node)
         for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
-            module_name = module_node.get("name")
-            if MCS.is_module_globally_activated(module_name, self.node):
+            module_path = "module[@name='" + module_node.get("name") + "']"
+            if MCS.recursively_scan_node_info(channel_path, module_path, "activated", "true", True) is not False:
                 self.start_module(module_node)
             else:
                 self.stop_module(module_node.get("name"))

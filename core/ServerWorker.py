@@ -14,7 +14,7 @@ Creator: Harrygiel
 
 import sys, time, threading, time
 import irc.bot, irc.strings
-
+from lxml import etree
 sys.path.append('core')
 import ChannelWorker
 import ModuleCoreSystem as MCS
@@ -55,10 +55,11 @@ class Worker(irc.bot.SingleServerIRCBot):
         c.nick(c.get_nickname() + "_")
 
     def on_connect(self, c, e):
+        print(e.arguments[0])
         del c, e
 
     def on_welcome(self, c, e):
-        del e
+        print(e.arguments[0])
         self.c = c
         self.admin_module_object.run(c)
         for channel in self.server_node.xpath("salon"):
@@ -105,6 +106,27 @@ class Worker(irc.bot.SingleServerIRCBot):
         self.channel_dict.pop(channel_name, None)
         self.c.part(channel_name)
 
-    def update_module_list(self):
-        for channel_object in self.channel_dict.values():
-            channel_object.update_module_list()
+    def update_server_node(self):
+        self.server_node = MCS.botConfObject.xpath("/botConf/server[@url='" + self.url + "']")
+        if len(self.server_node) == 0 :
+            self.stop()
+            return
+
+        new_channel_dict = {}
+
+        # 1) start new channel
+        for channel_node in self.server_node.xpath("salon"):
+            channel_name = channel_node.get("name")
+            if channel_node.get("name") in self.channel_dict:
+                self.channel_dict[channel_name].update_module_list()
+                self.new_channel_dict.update(self.channel_dict[channel_name]) 
+            else:
+                join_chan(self, channel_node)
+        # 2) Stop removed channel
+        for channel_name, channel_object in self.channel_dict.items():
+            try:
+                tmp = new_channel_dict[channel_name]
+            except KeyError:
+                channel_object.stop()
+
+        self.channel_dict = new_channel_dict

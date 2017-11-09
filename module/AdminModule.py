@@ -99,8 +99,8 @@ class AdminModule(threading.Thread):
         elif msg.startswith("!admin dump") and self.command_checker(splited_msg, 2, "!admin dump"):
             self.dump_xml()
 
-        elif msg.startswith("!admin reloadModule") and self.command_checker(splited_msg, 2, "!admin reloadModule"):
-            self.parent.update_module_list()
+        elif msg.startswith("!admin reloadServer") and self.command_checker(splited_msg, 2, "!admin reloadServer"):
+            self.parent.update_server_node()
 
         return
 
@@ -156,6 +156,9 @@ class AdminModule(threading.Thread):
 
     def list_info(self, info_name, node_name):
         node_root_xpath = MCS.get_node_root_path(node_name, self)
+        if node_root_xpath is False:
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] No conf for " + node_name + " !")
+            return
         if info_name == "admin":
             node_root_xpath = node_root_xpath + "/admin"
             node_list = MCS.botConfObject.xpath(node_root_xpath)
