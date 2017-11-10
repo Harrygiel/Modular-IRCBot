@@ -41,7 +41,7 @@ class AdminModule(threading.Thread):
     def _main(self):
         """ Method: module loop waiting for module event
         WARNING: recursively_scan_node_info already look
-        if you are trying to get upper right than your 
+        if you are trying to get upper right than your
         current position but not looking level right"""
         MCS.append_log("Module Started")
         while self.is_running:

@@ -29,9 +29,9 @@ class Fesse(BotModule):
                                    "{:.20s} fout une fessée de la mort qui tue à {:.20s}"]
 
         self.Fesse_msg_list_solo = ["{:.20s} baisse son pantalon et se donne une fessée magistrale, devant tout le monde !",
-                                   "{:.20s} se fesse violemment avec des orties fraîches",
-                                   "{:.20s} se punit avec une fessée dont le souvenir restera gravé dans sa mémoire",
-                                   "{:.20s} se fout une fessée de la mort qui tue"]
+                                    "{:.20s} se fesse violemment avec des orties fraîches",
+                                    "{:.20s} se punit avec une fessée dont le souvenir restera gravé dans sa mémoire",
+                                    "{:.20s} se fout une fessée de la mort qui tue"]
 
     def call_handle(self):
         """ Method: executed when the module event is raised """

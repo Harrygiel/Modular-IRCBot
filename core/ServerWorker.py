@@ -14,7 +14,7 @@ Creator: Harrygiel
 
 import sys, time, threading, time
 import irc.bot, irc.strings
-from lxml import etree
+
 sys.path.append('core')
 import ChannelWorker
 import ModuleCoreSystem as MCS
@@ -119,14 +119,15 @@ class Worker(irc.bot.SingleServerIRCBot):
             channel_name = channel_node.get("name")
             if channel_name in self.channel_dict:
                 self.channel_dict[channel_name].update_module_list()
-                new_channel_dict.update(self.channel_dict[channel_name]) 
+                new_channel_dict.update(self.channel_dict[channel_name])
             else:
-                join_chan(self, channel_node)
-                new_channel_dict.update(self.channel_dict[channel_name]) 
+                self.join_chan(self, channel_node)
+                new_channel_dict.update(self.channel_dict[channel_name])
         # 2) Stop removed channel
         for channel_name, channel_object in self.channel_dict.items():
             try:
                 tmp = new_channel_dict[channel_name]
+                del tmp
             except KeyError:
                 channel_object.stop()
 

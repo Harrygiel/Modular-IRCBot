@@ -56,15 +56,16 @@ def get_first_real_root(server_url, channel_name):
 def get_node_root_path(node_name, admin_module):
     """ Function: get the path of the root of a node """
     if node_name[0] == "#" and node_name in admin_module.parent.channel_dict:
-        return "/botConf/server[@url='" + admin_module.parent.url + "']/salon[@name='" + node_name + "']"
+        root_path = "/botConf/server[@url='" + admin_module.parent.url + "']/salon[@name='" + node_name + "']"
     # Server-side start module
     elif node_name == admin_module.parent.url:
-        return "/botConf/server[@url='" + admin_module.parent.url + "']"
+        root_path = "/botConf/server[@url='" + admin_module.parent.url + "']"
     # Global-side start module
     elif node_name.lower() == "global":
-        return "/botConf"
+        root_path = "/botConf"
     else:
-        return False
+        root_path = False
+    return root_path
 
 def get_server_node_by_name(server_url):
     """ Function: return server node by name """

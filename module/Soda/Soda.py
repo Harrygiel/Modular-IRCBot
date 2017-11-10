@@ -46,8 +46,7 @@ class Soda(BotModule):
                           "Seven Up",
                           "Sprite",
                           "Sprite Zero",
-                          "Taillefine Fiz"
-        ]
+                          "Taillefine Fiz"]
 
     def call_handle(self):
         """ Method: executed when the module event is raised """

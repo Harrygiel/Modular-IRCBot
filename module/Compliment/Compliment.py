@@ -24,17 +24,14 @@ class Compliment(BotModule):
         super(Compliment, self).__init__(parent, default_module_node)
 
     def get_compliment(self):
-        try:
-            link = "http://insultes.gromweb.com/generateur-d-insultes"
-            headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-            page = requests.get(link, headers=headers, verify=False)
-            soup = BeautifulSoup(page.text, "lxml").find("div", {"class": "phrasing_content"}).contents
-            if len(soup[1]) > 0:
-                return str(soup[1]).replace("<p>", '').replace("</p>", "")
-            else:
-                return ""
-        except:
-            return ""
+        link = "http://insultes.gromweb.com/generateur-d-insultes"
+        headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        page = requests.get(link, headers=headers, verify=False)
+        soup = BeautifulSoup(page.text, "lxml").find("div", {"class": "phrasing_content"}).contents
+        if len(soup[1]) > 0:
+            return str(soup[1]).replace("<p>", '').replace("</p>", "")
+        else:
+            return "Get Error"
 
     def call_handle(self):
         """ Method: executed when the module event is raised """
