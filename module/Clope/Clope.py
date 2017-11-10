@@ -23,15 +23,15 @@ class Clope(BotModule):
     """ Class: Clope Module Class"""
     def __init__(self, parent, default_module_node):
         super(Clope, self).__init__(parent, default_module_node)
-        self.Clope_msg_list_duo = ["{%.20s} offre une clope à {%.20s} (faudrait aussi penser à arrêter de fumer !)",
-                                   "{%.20s} jette une cigarette en chocolat à {%.20s}",
-                                   "{%.20s} offre une cigarette à {%.20s}. Quel brouillard d'un coup !",
-                                   "{%.20s} sort un briquet et allume une clope pour {%.20s}. Yeah baby !"]
+        self.Clope_msg_list_duo = ["{:.20s} offre une clope à {:.20s} (faudrait aussi penser à arrêter de fumer !)",
+                                   "{:.20s} jette une cigarette en chocolat à {:.20s}",
+                                   "{:.20s} offre une cigarette à {:.20s}. Quel brouillard d'un coup !",
+                                   "{:.20s} sort un briquet et allume une clope pour {:.20s}. Yeah baby !"]
 
-        self.Clope_msg_list_solo = ["{%.20s} se dégainne une clope (faudrait aussi penser à arrêter de fumer !)",
-                                    "{%.20s} s'offre une cigarette en chocolat",
-                                    "{%.20s} allume une cigarette. Quel brouillard d'un coup !",
-                                    "{%.20s} sort un briquet et allume sa clope. Yeah baby !"]
+        self.Clope_msg_list_solo = ["{:.20s} se dégainne une clope (faudrait aussi penser à arrêter de fumer !)",
+                                    "{:.20s} s'offre une cigarette en chocolat",
+                                    "{:.20s} allume une cigarette. Quel brouillard d'un coup !",
+                                    "{:.20s} sort un briquet et allume sa clope. Yeah baby !"]
 
     def call_handle(self):
         """ Method: executed when the module event is raised """
@@ -45,9 +45,6 @@ class Clope(BotModule):
         splited_msg = [argument for argument in splited_msg if argument != ""]
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
-            self.c.privmsg(target, random.choice(self.Clope_msg_list_duo).format(sender.nick, splited_msg[1]))
-            return
-
-        else:
             self.c.privmsg(target, random.choice(self.Clope_msg_list_solo).format(sender.nick))
-            return
+        else:
+            self.c.privmsg(target, random.choice(self.Clope_msg_list_duo).format(sender.nick, splited_msg[1]))

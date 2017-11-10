@@ -61,9 +61,8 @@ class Soda(BotModule):
         splited_msg = [argument for argument in splited_msg if argument != ""]
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
-            offre_soda_msg = "{%.20s} offre un " + random.choice(self.soda_list) + " à {%.20s} !!! ATTENTION : L'abus de bubulles est dangereux pour la santé !!!"
-            self.c.privmsg(target, offre_soda_msg.format(sender.nick, splited_msg[1]))
-
-        else:
-            offre_soda_msg = "{%.20s} s'ouvre une canette de " + random.choice(self.soda_list) + "  !!! ATTENTION : L'abus de bubulles est dangereux pour la santé !!!"
+            offre_soda_msg = "{:.20s} s'ouvre une canette de " + random.choice(self.soda_list) + "  !!! ATTENTION : L'abus de bubulles est dangereux pour la santé !!!"
             self.c.privmsg(target, offre_soda_msg.format(sender.nick))
+        else:
+            offre_soda_msg = "{:.20s} offre un " + random.choice(self.soda_list) + " à {:.20s} !!! ATTENTION : L'abus de bubulles est dangereux pour la santé !!!"
+            self.c.privmsg(target, offre_soda_msg.format(sender.nick, splited_msg[1]))

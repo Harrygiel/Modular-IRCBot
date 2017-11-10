@@ -23,11 +23,11 @@ class Chocolat(BotModule):
     """ Class: Chocolat Module Class"""
     def __init__(self, parent, default_module_node):
         super(Chocolat, self).__init__(parent, default_module_node)
-        self.Chocolat_msg_list_duo = ["{%.20s} apporte un chocolat bien chaud et crémeux à {%.20s}",
-                                      "{%.20s} fait chauffer un bon chocolat chaud pour {%.20s}"]
+        self.Chocolat_msg_list_duo = ["{:.20s} apporte un chocolat bien chaud et crémeux à {:.20s}",
+                                      "{:.20s} fait chauffer un bon chocolat chaud pour {:.20s}"]
 
-        self.Chocolat_msg_list_solo = ["{%.20s} se sers un chocolat bien chaud et crémeux",
-                                       "{%.20s} se fait chauffer un bon chocolat chaud"]
+        self.Chocolat_msg_list_solo = ["{:.20s} se sers un chocolat bien chaud et crémeux",
+                                       "{:.20s} se fait chauffer un bon chocolat chaud"]
 
     def call_handle(self):
         """ Method: executed when Chocolat module event is raised """
@@ -42,8 +42,6 @@ class Chocolat(BotModule):
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
             self.c.privmsg(target, random.choice(self.Chocolat_msg_list_duo).format(sender.nick, splited_msg[1]))
-            return
-
         else:
             self.c.privmsg(target, random.choice(self.Chocolat_msg_list_solo).format(sender.nick))
-            return
+

@@ -8,6 +8,8 @@ documented in this file.
 
 AUTHOR: Harrygiel
 
+CONTRIBUTORS: MemePasMoi
+
 ################       TODO       ################    (priority)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
@@ -41,6 +43,7 @@ of crash                                                   4
    * The
    * Chocolat
    * Biere
+   * And a lot of others
 - Corrected Cafe et Amour
 
 ########   V2.1.2

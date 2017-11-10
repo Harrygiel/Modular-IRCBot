@@ -18,11 +18,10 @@ from bs4 import BeautifulSoup
 sys.path.append('module')
 from BotModule import BotModule
 
-
-class Compliement(BotModule):
+class Compliment(BotModule):
     """ Class: Compliment Module Class"""
     def __init__(self, parent, default_module_node):
-        super(Compliement, self).__init__(parent, default_module_node)
+        super(Compliment, self).__init__(parent, default_module_node)
 
     def get_compliment(self):
         try:
@@ -50,10 +49,7 @@ class Compliement(BotModule):
         splited_msg = [argument for argument in splited_msg if argument != ""]
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
-            compliment_msg = "{%.20s} ==> " + self.get_compliment()
-            self.c.privmsg(target, compliment_msg.format(splited_msg[1]))
-            return
+            self.c.privmsg(target, self.get_compliment())
         else:
-           compliment_msg = self.get_compliment()
-           self.c.privmsg(target, compliment_msg)
-           return
+            compliment_msg = "{:.20s} ==> {:.100s}"
+            self.c.privmsg(target, compliment_msg.format(self.get_compliment(), splited_msg[1]))

@@ -150,9 +150,16 @@ Q: This script corrupted my user, computer, my house and burnt my dog !
 ```
 A: Wow seriously ? What a powerful bot. No seriously you where prevented that it's a one-man made project and that some bug could be found. send me an issue or/and contact me.
 
-## Changelog
+* V2.1.3
 
-########   V2.1.2
+- Add native module:
+   * The
+   * Chocolat
+   * Biere
+   * And a lot of others
+- Corrected Cafe et Amour
+
+* V2.1.2
 
 - Corrected Youtube module urllib problem by
 using request instead (1 less module to import)
@@ -172,14 +179,6 @@ is_user_globally_admin by the new general function
 was not in UTF-8
 - Corrected README.TXT for GitHub display
 
-* V2.1
-
-- Project added on github
-- Update from python 2.7 to python 3.5.3
-- Bot now auto reconnect from disconnect and kick
-- Added login info in XML
-- Add basic admin level
-- Better and more complete README.TXT
 
 * Before
 
@@ -226,9 +225,8 @@ Script core created by Harrygiel and contributors at https://github.com/Harrygie
 
 ### Modules
 
-The modules are created by their main author. Native modules are created by Harrygiel
-
-Harrygiel: Youtube Dictionary Horoscope Help Love Oracle Ko Cafe Amour
+The modules are created by their main author.
+Contributor of modules: MemePasMoi, Harrygiel
 
 ## License
 
