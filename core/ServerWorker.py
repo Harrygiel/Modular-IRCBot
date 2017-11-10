@@ -117,11 +117,12 @@ class Worker(irc.bot.SingleServerIRCBot):
         # 1) start new channel
         for channel_node in self.server_node.xpath("salon"):
             channel_name = channel_node.get("name")
-            if channel_node.get("name") in self.channel_dict:
+            if channel_name in self.channel_dict:
                 self.channel_dict[channel_name].update_module_list()
-                self.new_channel_dict.update(self.channel_dict[channel_name]) 
+                new_channel_dict.update(self.channel_dict[channel_name]) 
             else:
                 join_chan(self, channel_node)
+                new_channel_dict.update(self.channel_dict[channel_name]) 
         # 2) Stop removed channel
         for channel_name, channel_object in self.channel_dict.items():
             try:

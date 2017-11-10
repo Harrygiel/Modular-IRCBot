@@ -52,4 +52,4 @@ class Compliment(BotModule):
             self.c.privmsg(target, self.get_compliment())
         else:
             compliment_msg = "{:.20s} ==> {:.100s}"
-            self.c.privmsg(target, compliment_msg.format(self.get_compliment(), splited_msg[1]))
+            self.c.privmsg(target, compliment_msg.format(splited_msg[1], self.get_compliment()))

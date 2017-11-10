@@ -2,6 +2,6 @@
 [run]
 branch = True
 source = /home/harrygiel/bot
-
+omit = bot/module/Biere/Biere.py
 [xml]
 output = coverage/coverage.xml

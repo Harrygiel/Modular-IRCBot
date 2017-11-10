@@ -19,6 +19,7 @@ CONTRIBUTORS: MemePasMoi
 - Allow admin to list every module recursively             1
 - Allow admin to list every admin recursively              1
 - Allow configuration reload from file                     1
+- Advanced auto analysis feature                           1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
@@ -31,11 +32,15 @@ CONTRIBUTORS: MemePasMoi
 - Act from bash as superadmin                              3
 - Module: Protect from mass AND flood HL                   3
 - Add Blacklist                                            3
-- Auto check running module and reboot it in case          
-of crash                                                   4
-- Auto fix and analysis                                    4
 
 ################    CHANGELOG     ################
+
+########   V2.4
+
+- Allow module to trigger error and restart
+automatically in any case
+- Fixed minor bug
+- Fixed code smell (Sonar)
 
 ########   V2.1.3
 

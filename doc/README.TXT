@@ -150,6 +150,13 @@ Q: This script corrupted my user, computer, my house and burnt my dog !
 ```
 A: Wow seriously ? What a powerful bot. No seriously you where prevented that it's a one-man made project and that some bug could be found. send me an issue or/and contact me.
 
+* V2.4
+
+- Allow module to trigger error and restart
+automatically in any case
+- Fixed minor bug
+- Fixed code smell (Sonar)
+
 * V2.1.3
 
 - Add native module:
@@ -173,13 +180,6 @@ info recursively: recursively_scan_node_info
 - Replaced is_module_globally_activated and
 is_user_globally_admin by the new general function
 
-* V2.1.1
-
-- Corrected Buffer error when the message recieved
-was not in UTF-8
-- Corrected README.TXT for GitHub display
-
-
 * Before
 
 See Changelog
@@ -188,7 +188,7 @@ See Changelog
 
 From 0 (least important) to 5 (most important)
                                                       (priority)
-- Seen, Spotify, deezer and co modules                     0
+- Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
 - Add warning possibility for desactivated modules         1
 - Clear every code smell                                   1
@@ -196,6 +196,7 @@ From 0 (least important) to 5 (most important)
 - Allow admin to list every module recursively             1
 - Allow admin to list every admin recursively              1
 - Allow configuration reload from file                     1
+- Advanced auto analysis feature                           1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
@@ -208,9 +209,6 @@ From 0 (least important) to 5 (most important)
 - Act from bash as superadmin                              3
 - Module: Protect from mass AND flood HL                   3
 - Add Blacklist                                            3
-- Auto check running module and reboot it in case          
-of crash                                                   4
-- Auto fix and analysis                                    4
 
 ## Authors
 

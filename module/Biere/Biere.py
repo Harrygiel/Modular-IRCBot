@@ -6,10 +6,11 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1.2
+Chamot V2.4
 Biere Module
 
 Creator: MemePasMoi
+Contributor: Harrygiel
 """
 
 import sys
@@ -2106,7 +2107,7 @@ class Biere(BotModule):
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
             offre_biere_msg = "{:.20s} s'ouvre une {:.30s} en solo : santé !!!".format(sender.nick, random.choice(self.biere_list))
-            self.c.privmsg(target, offre_biere_msg.format(sender.nick, splited_msg[1]))
+            self.c.privmsg(target, offre_biere_msg)
         else:
             offre_biere_msg = "{:.20s} offre une {:.30s} à {:.20s}: cul sec !!!".format(sender.nick, random.choice(self.biere_list), splited_msg[1])
-            self.c.privmsg(target, offre_biere_msg.format(sender.nick))
+            self.c.privmsg(target, offre_biere_msg)

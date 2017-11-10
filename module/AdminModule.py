@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Chamot V2.4
 Administrator Module Class
 
 Creator: Harrygiel

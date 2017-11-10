@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Chamot V2.4
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
@@ -59,7 +59,7 @@ class Worker(threading.Thread):
         MCS.append_log(self.name + " stopped")
         self.callEvent.set()
 
-    def update_module_list(self):
+    def update_module_list(self): # IS THIS WORKING ? BECAUSE NO NO NOTHING CASE
         channel_path = MCS.botConfObject.getpath(self.node)
         for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
             module_path = "module[@name='" + module_node.get("name") + "']"
@@ -93,3 +93,7 @@ class Worker(threading.Thread):
             return True
         else:
             return False
+
+    def restart_module(self, module_node):
+        self.stop_module(module_node.get("name"))
+        self.start_module(module_node)

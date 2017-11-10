@@ -33,6 +33,21 @@ https://www.youtube.com/watch?v=71ogR-3rxy0&list=RD71ogR-3rxy0
 https://www.youtube.com/watch?v=71ogR-3r0&list=RD71o-3rxy0
 !amour 1
 
+!clope
+!clope 1
+!the
+!the 1
+!chocolat
+!chocolat 1
+!soda
+!soda 1
+!insulte
+!insulte 1
+!baffe
+!baffe 1
+!fesse
+!fesse 1
+
 ###################################################################
 
 !admin saveConf test.xml

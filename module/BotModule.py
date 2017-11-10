@@ -6,13 +6,13 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Chamot V2.4
 Generic Module Class
 
 Creator: Harrygiel
 """
 
-import threading, sys
+import threading, sys, traceback
 
 sys.path.append('core')
 import ModuleCoreSystem as MCS
@@ -24,6 +24,7 @@ class BotModule(threading.Thread):
         self.callEvent = threading.Event()
         self.parent = parent
         self.c = parent.c
+        self.default_node = default_module_node
         self.module_name = default_module_node.get("name")
         self.name = parent.name + "/" + self.module_name
         self.is_running = True
@@ -40,12 +41,18 @@ class BotModule(threading.Thread):
     def _main(self):
         """ Method: module loop waiting for module event """
         MCS.append_log("Module Started")
-        while self.is_running:
-            self.callEvent.wait()
-            if self.is_running:
-                MCS.append_log(self.name + " called by " + self.argument[2] + "with: " + self.argument[1])
-                self.call_handle()
-            self.callEvent.clear()
+        try:
+            while self.is_running:
+                self.callEvent.wait()
+                if self.is_running:
+                    MCS.append_log(self.name + " called by " + self.argument[2] + "with: " + self.argument[1])
+                    self.call_handle()
+                self.callEvent.clear()
+        except Exception as e:
+            MCS.append_log("{:.100s} Need to reboot... Exception: {:.100s}".format(self.name, str(e)))
+            traceback.print_exc()
+            print("[" + self.name + "] rebooting...")
+            self.parent.restart_module(self.default_node)
         return
 
     def call_handle(self):
