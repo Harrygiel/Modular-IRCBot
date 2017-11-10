@@ -6,13 +6,11 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Chamot V2.1.2
 Amour Module
 
 Creator: Harrygiel
 """
-
-from __future__ import unicode_literals
 
 import sys
 
@@ -37,7 +35,7 @@ class Amour(BotModule):
         if msg[6:] != None and sender in msg[7:]:
             self.c.privmsg(target, "" + sender.nick + " éteint la lumière, allume une bougie, mets une musique douce.... Et sort les paquets de mouchoir ...")
         else:
-            amour_text = "" + sender.nick + " éteint la lumière, allume une bougie, mets une musique douce.....s'approche doucement de toi, " + msg[7:]+ " te regarde dans les yeux, te déshabille doucement, t'allonge sur le lit et te fais l'amour HuMmMmm...:p"
+            amour_text = "" + sender.nick + " éteint la lumière, allume une bougie, met une musique douce.....s'approche doucement de toi, " + msg[7:]+ " te regarde dans les yeux, te déshabille doucement, t'allonge sur le lit et te fait l'amour HuMmMmm.. :3"
             if "Ippo".lower() in sender.lower() or "Wormy".lower() in sender.lower():
                 amour_text = amour_text + " Attention aux bébés surprise !"
 

@@ -7,7 +7,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 Seriously guys, you just have to ask, I want to know who will use this.
 
 Chamot V2.1.2
-Cafe Module
+Chocolat Module
 
 Creator: Harrygiel
 """
@@ -18,10 +18,10 @@ sys.path.append('module')
 from BotModule import BotModule
 
 
-class Cafe(BotModule):
-    """ Class: Cafe Module Class"""
+class Chocolat(BotModule):
+    """ Class: Chocolat Module Class"""
     def __init__(self, parent, default_module_node):
-        super(Cafe, self).__init__(parent, default_module_node)
+        super(Chocolat, self).__init__(parent, default_module_node)
 
     def call_handle(self):
         """ Method: executed when the module event is raised """
@@ -36,6 +36,6 @@ class Cafe(BotModule):
         splited_msg = [argument for argument in splited_msg if argument != ""]
 
         if len(splited_msg) < 2 or sender in splited_msg[1]:
-            self.c.privmsg(target, "" + sender.nick + " se prépare un e-café bien chaud. Enfin prêt pour la journée !")
+            self.c.privmsg(target, "" + sender.nick + " se prépare un e-chocolat bien chaud. Enfin prêt pour la journée !")
         else:
-            self.c.privmsg(target, "" + sender.nick + " offre un e-café bien chaud à " + splited_msg[1] + ". Préparé avec amour !")
+            self.c.privmsg(target, "" + sender.nick + " offre un e-chocolat bien chaud à " + splited_msg[1] + ". Préparé avec amour !")

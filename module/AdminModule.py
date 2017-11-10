@@ -55,7 +55,6 @@ class AdminModule(threading.Thread):
             root_node_path = MCS.botConfObject.getpath(base_node[0])
 
             admin_node = MCS.recursively_scan_node_info(root_node_path, "admin", "mask", self.argument[0], False)
-            admin_node = MCS.is_user_globally_admin(self.argument[0], base_node[0])
             if admin_node is not False:
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
                 self.execute_admin_order(self.argument[1], admin_node)
