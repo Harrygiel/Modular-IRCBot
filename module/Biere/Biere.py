@@ -2100,5 +2100,16 @@ class Biere(BotModule):
         sender = self.argument[0]
         msg = self.argument[1]
         target = self.argument[2]
-        offre_biere_msg = sender.nick + " offre une " + random.choice(self.biere_list) + " à " + msg[7:] + ": cul sec !!!"
-        self.c.privmsg(target, offre_biere_msg)
+
+        splited_msg = msg.split(" ")
+        splited_msg = [argument for argument in splited_msg if argument != ""]
+
+        if len(splited_msg) < 2 or sender in splited_msg[1]:
+            offre_biere_msg = sender.nick + "{%.20s} offre une " + random.choice(self.biere_list) + " à {%.20s}: cul sec !!!"
+            self.c.privmsg(target, offre_biere_msg.format(sender.nick, splited_msg[1]))
+            return
+
+        else:
+            offre_biere_msg = sender.nick + "{%.20s} s'ouvre une " + random.choice(self.biere_list) + " en solo : santé !!!"
+            self.c.privmsg(target, offre_biere_msg.format(sender.nick))
+            return

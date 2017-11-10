@@ -34,6 +34,30 @@
     <module name="Biere" activated="true">
       <call>!biere</call>
     </module>
+    <module name="Soda" activated="true">
+      <call>!soda</call>
+    </module>
+    <module name="Compliment" activated="true">
+      <call>!compliment</call>
+    </module>
+    <module name="Clope" activated="true">
+      <call>!clope</call>
+    </module>
+    <module name="Fesse" activated="true">
+      <call>!fesse</call>
+    </module>
+    <module name="Baffe" activated="true">
+      <call>!baffe</call>
+    </module>
+    <module name="The" activated="true">
+      <call>!the</call>
+    </module>
+    <module name="Chocolat" activated="true">
+      <call>!chocolat</call>
+    </module>
+    <module name="Calin" activated="true">
+      <call>!calin</call>
+    </module>
 
   <server name="Log name" url="irc.url.com" port="6667">
     <botinfo name="BotName" password="********" />
