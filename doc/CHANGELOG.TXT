@@ -1,4 +1,4 @@
-################ IRC BOT (CHAMOT) ################
+################ Modular-IRCBot ################
 Copyright (C) Harrygiel -  All Rights Reserved
 Unauthorized use of this file or any file from
 this project, via any medium is strictly prohibited
@@ -13,11 +13,10 @@ CONTRIBUTORS: MemePasMoi
 ################       TODO       ################    (priority)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
-- Add warning possibility for desactivated modules         1
+- Add warning possibility for desactivated modules         0
+- Check if module DO reload correctly                      1
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
-- Allow admin to list every module recursively             1
-- Allow admin to list every admin recursively              1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
 - Allow admin to list recursively                          2
@@ -25,8 +24,6 @@ CONTRIBUTORS: MemePasMoi
 - Comment channel node on disconnection to keep conf       2
 - Allow bot name to be changed (code AND /nick)            2
 - Send PV message at user connexion (remember)             2
-- Allow load by name, and not only if in defaultconf        
-(useful to load a module without restarting)               2
 - Allow regexp in admin mask                               3
 - Allow use of official admin from channel                 3
 - Act from bash as superadmin                              3
@@ -35,11 +32,25 @@ CONTRIBUTORS: MemePasMoi
 
 ################    CHANGELOG     ################
 
-########   V2.4
+########   V2.3
+
+- Look in modules folder to find module name
+without needing to write them all in the default
+configuration (clean conf xml a lot)
+- Can load new module from modules folder
+- Add native module: Meteo
+- Changed "module" folder to "modules"
+- Changed str+str concat with str.format()
+in modules
+- Fixed log sender name
+- Fixed minor bugs
+- Cleaned every instance of the first bot name
+
+########   V2.2
 
 - Allow module to trigger error and restart
 automatically in any case
-- Fixed minor bug
+- Fixed minor bugs
 - Fixed code smell (Sonar)
 
 ########   V2.1.3

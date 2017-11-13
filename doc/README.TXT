@@ -24,9 +24,26 @@
 
 [License](https://github.com/Harrygiel/Modular-IRCBot#license)
 
-##Features
+## Features
 
-##WARNING
+This project is a modular IRC Bot in python who can wistand a lot of problems without any human intervention to go to his last working state, and fully controlable by IRC PV.
+
+* Features:
+
+  * Thread safe worked for every server, channel and module
+  * Fully controled by IRC PV, with an administrator recursive tree
+  * Fully customisable configuration from server or from PV
+  * Every channel can have his own list of module, taking the default rule from the server, then from the general configuration
+  * Start and stop module on the fly, without needing restart
+  * Print a list of command on every channel, linked to started module and not global list
+  * Wistand module crash and go back to last working state without any human interaction
+  * Full log system
+  * A lot of native module, and an easy way to implement new one, without having to know threads, event, or anything linked to the core part.
+  * Nearly never need to be stopped
+  * Recursive blacklist tree (soon)
+  * Code cleaned by SonarQube and covered by python3-coverage
+
+## WARNING
 
 This script is for now a one-man made project. Some weird bug can be found. Be warned that I can't give you any warranty except "It work for me".  
 Because the bot is created for a french server, a lot of native module will have french strings. However, the log system and the administation module are fully in english.
@@ -92,30 +109,43 @@ Add a module to the said channel
 "!admin stop <module> <channel>":
 Remove a module to the said channel
 
-"!admin addAdmin <pseudo!~realname@host> <level> <range>":
+"!admin addAdmin <pseudo!~realname@host> <level> <range>": (servers, channels, modules)
 Add an (COMPLETE) admin mask on the said range at the said level (if level = 0, remove the admin)
 
-"!admin delAdmin <pseudo!~realname@host> <range>":
+"!admin delAdmin <pseudo!~realname@host> <range>": (servers, channels, modules)
 Remove an (COMPLETE) admin mask on the said range at the said level
 
 "!admin saveConf <xml_file>":
 Allow to save the bot configuration as a file WARNING, you can erease the actual configuration file !
 
-"!admin list <info> <range>"
+"!admin list <info> <range>": (servers, channels, modules)
 Allow an admin to get an infomation about the said range
+
+    "!admin list module installed":
+    give a list of installed module in real time
 
 "!admin dump":
 Print the full configuration IN MEMORY to the bash
 
-"!admin reload <range>":
-Alow to reload everything under the said range (servers, channels, modules)
+"!admin reload <range>":(servers, channels, modules)
+Alow to reload everything under the said range
 
 #### Adding a module
 
-To add a module, you will have to:
+##### After 2.5:
+
+To add a module, you have to:
+1) Create a new folder and put the module .py in this folder. The .py, the folder and the module sub-class in the file need to have the EXACT SAME NAME.
+2) Do an "!admin start <module> <channel>"
+
+##### Before 2.5:
+
+```
+To add a module, you had to:
 1) Create a new folder and put the module .py in this folder. The .py, the folder and the module sub-class in the file need to have the EXACT SAME NAME.
 2) Add a line MANUALLY in the configuration file in the defaultconf node with the name of the folder. 
 3) Restart the bot. One day you will be able to reload the configuration, or even look if a folder given in argument exist in "module/". But not now, sadly.
+```
 
 ### Updating the script
 
@@ -150,7 +180,21 @@ Q: This script corrupted my user, computer, my house and burnt my dog !
 ```
 A: Wow seriously ? What a powerful bot. No seriously you where prevented that it's a one-man made project and that some bug could be found. send me an issue or/and contact me.
 
-* V2.4
+* V2.3
+
+- Look in modules folder to find module name
+without needing to write them all in the default
+configuration (clean conf xml a lot)
+- Can load new module from modules folder
+- Add native module: Meteo
+- Changed "module" folder to "modules"
+- Changed str+str concat with str.format()
+in modules
+- Fixed log sender name
+- Fixed minor bugs
+- Cleaned every instance of the first bot name
+
+* V2.2
 
 - Allow module to trigger error and restart
 automatically in any case
@@ -166,20 +210,6 @@ automatically in any case
    * And a lot of others
 - Corrected Cafe et Amour
 
-* V2.1.2
-
-- Corrected Youtube module urllib problem by
-using request instead (1 less module to import)
-- More call to log
-- Every thread now have a unique name linked to
-his position in the configuration
-- Admin are now able to list module and admin in
-a node
-- Created a general lib function to check for
-info recursively: recursively_scan_node_info
-- Replaced is_module_globally_activated and
-is_user_globally_admin by the new general function
-
 * Before
 
 See Changelog
@@ -190,11 +220,10 @@ From 0 (least important) to 5 (most important)
                                                       (priority)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
-- Add warning possibility for desactivated modules         1
+- Add warning possibility for desactivated modules         0
+- Check if module DO reload correctly                      1
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
-- Allow admin to list every module recursively             1
-- Allow admin to list every admin recursively              1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
 - Allow admin to list recursively                          2
@@ -202,8 +231,6 @@ From 0 (least important) to 5 (most important)
 - Comment channel node on disconnection to keep conf       2
 - Allow bot name to be changed (code AND /nick)            2
 - Send PV message at user connexion (remember)             2
-- Allow load by name, and not only if in defaultconf        
-(useful to load a module without restarting)               2
 - Allow regexp in admin mask                               3
 - Allow use of official admin from channel                 3
 - Act from bash as superadmin                              3

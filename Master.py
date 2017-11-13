@@ -14,10 +14,9 @@ Creator: Harrygiel
 
 import sys, signal, threading, time, datetime, os.path
 
-sys.path.append('core')
-import ServerWorker
-import ModuleCoreSystem as MCS
-from BotConfParsing import parse_conf
+import core.ServerWorker
+import core.ModuleCoreSystem as MCS
+from core.BotConfParsing import parse_conf
 
 server_dict = {}
 
@@ -46,7 +45,7 @@ def main():
     MCS.append_log("Configuration loaded")
     for server in MCS.botConfObject.xpath("/botConf/server"):
 
-        server_object = ServerWorker.Worker(server)
+        server_object = core.ServerWorker.Worker(server)
         server_dict.update({server.get("url"): server_object})
         server_object.run()
 

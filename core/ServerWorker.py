@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Chamot V2.3
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
@@ -15,12 +15,11 @@ Creator: Harrygiel
 import sys, time, threading, time
 import irc.bot, irc.strings
 
-sys.path.append('core')
-import ChannelWorker
-import ModuleCoreSystem as MCS
-from module.AdminModule import AdminModule
+import core.ChannelWorker
+import core.ModuleCoreSystem as MCS
+from modules.AdminModule import AdminModule
 
-import JaracoBuffer as buffer
+import core.JaracoBuffer as buffer
 irc.client.ServerConnection.buffer_class = buffer.LenientDecodingLineBuffer
 
 class Worker(irc.bot.SingleServerIRCBot):
@@ -97,7 +96,7 @@ class Worker(irc.bot.SingleServerIRCBot):
         del c
 
     def join_chan(self, channel_node):
-        channel_worker_object = ChannelWorker.Worker(self.c, channel_node, self)
+        channel_worker_object = core.ChannelWorker.Worker(self.c, channel_node, self)
         channel_worker_object.run()
         self.channel_dict.update({channel_node.get("name"): channel_worker_object})
 

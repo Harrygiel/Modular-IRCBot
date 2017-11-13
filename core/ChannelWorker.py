@@ -6,16 +6,15 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.4
+Modular-IRCBot v2.3
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
 """
 
-import sys, threading, imp
+import os, threading, imp
+import core.ModuleCoreSystem as MCS
 
-sys.path.append('core')
-import ModuleCoreSystem as MCS
 
 class Worker(threading.Thread):
     """ Class: ChannelWorker Class """
@@ -59,25 +58,30 @@ class Worker(threading.Thread):
         MCS.append_log(self.name + " stopped")
         self.callEvent.set()
 
-    def update_module_list(self): # IS THIS WORKING ? BECAUSE NO NO NOTHING CASE
+    def update_module_list(self):
         channel_path = MCS.botConfObject.getpath(self.node)
+        module_set = set([name for name in os.listdir("modules") if os.path.isdir(os.path.join("modules", name)) and name[0] is not "_"])
         for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
-            module_path = "module[@name='" + module_node.get("name") + "']"
-            if MCS.recursively_scan_node_info(channel_path, module_path, "activated", "true", True) is not False:
-                self.start_module(module_node)
+            module_set.update([module_node.get("name")])
+        print(module_set)
+        for module_name in module_set:
+            module_path = "module[@name='" + module_name + "']"
+            scan_result = MCS.recursively_scan_node_info(channel_path, module_path, "activated", "true", True)
+            if scan_result is None or scan_result is not False:
+                self.start_module(module_name)
             else:
-                self.stop_module(module_node.get("name"))
-
-    def start_module(self, module_node):
+                #stop or do nothing
+                self.stop_module(module_name)
+#len(MCS.botConfObject) and 
+    def start_module(self, module_name):
         try:
-            if module_node.get("name") in self.module_dict:
+            if module_name in self.module_dict:
                 #Module already activated
                 return
-            module_name = module_node.get("name")
-            module_path = "./module/" + module_name + "/" + module_name + ".py"
+            base_path = "./modules/" + module_name + "/"
+            module_path = base_path + module_name + ".py"
             class_ = getattr(imp.load_source(module_name, module_path), module_name)
-            #self.node.append(newModule_node)
-            new_module_class = class_(self, module_node)
+            new_module_class = class_(self)
             new_module_class.run()
             self.module_dict.update({module_name: new_module_class})
             return True
@@ -94,6 +98,6 @@ class Worker(threading.Thread):
         else:
             return False
 
-    def restart_module(self, module_node):
-        self.stop_module(module_node.get("name"))
-        self.start_module(module_node)
+    def restart_module(self, module_name):
+        self.stop_module(module_name)
+        self.start_module(module_name)

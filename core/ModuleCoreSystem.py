@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.1
+Modular-IRCBot v2.3
 The core of the module system: look for module, activate or desactivate them, etc...
 
 Creator: Harrygiel
@@ -23,7 +23,7 @@ DEFAULTCONFPATH = "/botConf"
 def recursively_scan_node_info(root_node_path, node_path, node_attr, node_value, stop_if_found):
     """ Function: recursively look in XML Tree if node_attr is at node_value """
     root_node = botConfObject.xpath(root_node_path)[0]
-    return_node = False
+    return_node = None
     while root_node != None:
         node = root_node.xpath(node_path)
         if len(node) > 0:
