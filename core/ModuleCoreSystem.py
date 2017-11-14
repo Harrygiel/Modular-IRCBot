@@ -6,13 +6,13 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3
+Modular-IRCBot v2.3.1
 The core of the module system: look for module, activate or desactivate them, etc...
 
 Creator: Harrygiel
 """
 
-import os.path, datetime, threading
+import os.path, re, datetime, threading
 from lxml import etree
 
 botConfObject = etree.Element("root")
@@ -22,25 +22,34 @@ DEFAULTCONFPATH = "/botConf"
 
 def recursively_scan_node_info(root_node_path, node_path, node_attr, node_value, stop_if_found):
     """ Function: recursively look in XML Tree if node_attr is at node_value """
-    root_node = botConfObject.xpath(root_node_path)[0]
+    root_node = botConfObject.xpath(root_node_path)
+    if len(root_node) > 0:
+        root_node = root_node[0]
+    else:
+        root_node = None
     return_node = None
     while root_node != None:
-        node = root_node.xpath(node_path)
-        if len(node) > 0:
-            node = node[0]
-            if stop_if_found:
-                return locally_scan_node_info(node, node_attr, node_value)
-            else:
-                return_node = locally_scan_node_info(node, node_attr, node_value)
+        nodes = root_node.xpath(node_path)
+        if len(nodes) > 0:
+            for node in nodes:
+                if stop_if_found:
+                    return locally_scan_node_info(node, node_attr, node_value)
+                else:
+                    return_node = locally_scan_node_info(node, node_attr, node_value)
         root_node = root_node.getparent()
     return return_node
 
 def locally_scan_node_info(node, node_attr, node_value):
     """ Function: look in node if node_attr is at node_value """
-    if node.get(node_attr) == node_value:
-        return node
-    else:
+    try:
+        if re.match(node.get(node_attr), node_value):
+            return node
+        else:
+            return False
+    except re.error:
+        print("regexp badly written")
         return False
+
 
 def get_first_real_root(server_url, channel_name):
     """ Function: look for a channel node.

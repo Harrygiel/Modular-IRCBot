@@ -1,0 +1,38 @@
+<botConf>
+    <botinfo name="Bot"/>
+    <admin mask="pseudo!~realname@host" level="10"/>
+    <admin mask="[^!]*!~[^@]*@ircop.*" level="5"/>
+    <blacklisted mask="pseudo!~realname@host"/>
+    <blacklisted mask=".*IDontLikeYou.*"/>
+    <module name="Youtube" activated="true">
+      <call>youtu</call>
+    </module>
+    <module name="Dictionary" activated="true">
+      <call>!dict</call>
+      <call>!dico</call>
+    </module>
+    <module name="Compliment" activated="false">
+      <call>!insulte</call>
+    </module>
+    <module name="Cafe" activated="false" />
+    <module name="Help" activated="true">
+      <call>!help</call>
+    </module>
+    <module name="Meteo" activated="true">
+      <apikey>wunderground_key</apikey>
+    </module>
+
+  <server name="Log Name" url="url.irc.com" port="6667">
+    <botinfo name="Bot" password="*********" obfuscate="false"/>
+    <blacklisted mask="[^!]*!~[^@]*@troll.*"/>
+    <salon name="#testground">
+      <module name="Youtube" activated="true"/>
+      <module name="Dictionary" activated="false"/>
+      <module name="Compliment" activated="true"/>
+    </salon>
+    <salon name="#testground2" blacklist="false">
+      <admin mask="pseudo!~realname@host" level="10"/>
+      <blacklisted mask=".*"/>
+    </salon>
+  </server>
+</botConf>

@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3
+Modular-IRCBot v2.3.1
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
@@ -25,6 +25,11 @@ class Worker(threading.Thread):
         self.parent = parent
         self.node = channel_node
         self.channel_name = self.node.get("name")
+        blacklist = self.node.get("blacklist")
+        if blacklist is None or blacklist.lower() == "true":
+            self.blacklist = True
+        else:
+            self.blacklist = False
         self.name = parent.url + "/" + self.channel_name
         self.is_running = True
         self.module_dict = {}
@@ -46,7 +51,7 @@ class Worker(threading.Thread):
             if self.is_running:
                 for module_object in self.module_dict.values():
                     for call_text in module_object.call_set:
-                        if call_text in self.argument[1]:
+                        if call_text.lower() in self.argument[1].lower():
                             module_object.argument = self.argument
                             module_object.callEvent.set()
             self.callEvent.clear()
@@ -60,10 +65,10 @@ class Worker(threading.Thread):
 
     def update_module_list(self):
         channel_path = MCS.botConfObject.getpath(self.node)
-        module_set = set([name for name in os.listdir("modules") if os.path.isdir(os.path.join("modules", name)) and name[0] is not "_"])
+        module_set = set([name for name in os.listdir("modules")
+                         if os.path.isdir(os.path.join("modules", name)) and name[0] is not "_"])
         for module_node in MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module"):
             module_set.update([module_node.get("name")])
-        print(module_set)
         for module_name in module_set:
             module_path = "module[@name='" + module_name + "']"
             scan_result = MCS.recursively_scan_node_info(channel_path, module_path, "activated", "true", True)
@@ -72,7 +77,7 @@ class Worker(threading.Thread):
             else:
                 #stop or do nothing
                 self.stop_module(module_name)
-#len(MCS.botConfObject) and 
+
     def start_module(self, module_name):
         try:
             if module_name in self.module_dict:

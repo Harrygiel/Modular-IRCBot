@@ -14,23 +14,34 @@ CONTRIBUTORS: MemePasMoi
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
 - Add warning possibility for desactivated modules         0
-- Check if module DO reload correctly                      1
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
+- Module: send PV message at user connexion (remember)     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
+- Allow use of notice and private                          2
+- Module: read any link title                              2
 - Allow bot name to be changed (code AND /nick)            2
-- Send PV message at user connexion (remember)             2
-- Allow regexp in admin mask                               3
-- Allow use of official admin from channel                 3
-- Act from bash as superadmin                              3
+- Module: send global message                              2
+- Allow use of official admin from channel in conf option  3 
+- Act from bash as superadmin                              3 (REPORTED)
 - Module: Protect from mass AND flood HL                   3
-- Add Blacklist                                            3
+- Add Blacklist modification from PV                       3
 
 ################    CHANGELOG     ################
+
+########   V2.3.1
+
+- Allow activation or desactivation of server
+obfuscation from conf
+- Allow use of official regexp in every mask
+- Pyramidal management of blacklist in configuration
+- Allow activation or desactivation of blacklist
+in channel from conf
+- Removed useless commented line
 
 ########   V2.3
 
@@ -97,7 +108,7 @@ was not in UTF-8
 - Complete rework: New version using threading
 instead of a linear script 
 - SIGINT signal working and cleanly stop the bot
-- Pyramidal management of administrator inconfiguration
+- Pyramidal management of administrator in configuration
 - Pyramidal management of module call string in
 configuration
 - Configuration file nearlly fully controled by

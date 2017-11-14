@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3
+Modular-IRCBot V2.3.1
 Generic Module Class
 
 Creator: Harrygiel
@@ -24,6 +24,7 @@ class BotModule(threading.Thread):
         self.parent = parent
         self.c = parent.c
         self.name = parent.name + "/" + self.__class__.__name__
+        self.path = "/botConf/server[@url='" + self.parent.parent.url + "']/salon[@name='" + parent.channel_name + "']"
         self.is_running = True
         self.call_set = self.get_call_set(parent.node)
         self.thread = None
@@ -42,8 +43,13 @@ class BotModule(threading.Thread):
             while self.is_running:
                 self.callEvent.wait()
                 if self.is_running:
-                    MCS.append_log(self.name + " called by " + self.argument[0] + "with: " + self.argument[1])
-                    self.call_handle()
+                    blacklisted = MCS.recursively_scan_node_info(self.path, "blacklisted", "mask", self.argument[0], True)
+                    if self.parent.blacklist is False or blacklisted is None or blacklisted is False:
+                        MCS.append_log(self.name + " called by " + self.argument[0] + "with: " + self.argument[1])
+                        self.call_handle()
+                    else:
+                        print("BLACKLISTED !!!")
+                        MCS.append_log(self.name + " called by blacklisted " + self.argument[0] + "with: " + self.argument[1])
                 self.callEvent.clear()
         except Exception as e:
             MCS.append_log("{:.100s} Need to reboot... Exception: {:.100s}".format(self.name, str(e)))

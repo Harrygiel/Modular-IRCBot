@@ -6,14 +6,14 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.5
+Modular-IRCBot V2.3.1
 Chocolat Module
 
 Creator: Harrygiel, MemePasMoi
 """
 
 import random
-from BotModule import BotModule
+from modules.BotModule import BotModule
 
 class Chocolat(BotModule):
     """ Class: Chocolat Module Class"""

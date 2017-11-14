@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.5
+Modular-IRCBot V2.3.1
 Meteo Module
 
 Creator: Harrygiel
@@ -25,7 +25,7 @@ class Meteo(BotModule):
     """ Class: Meteo Module Class"""
     def __init__(self, parent):
         super(Meteo, self).__init__(parent)
-        self.api_key = MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module[@name='Meteo']")[0].text
+        self.api_key = MCS.botConfObject.xpath(MCS.DEFAULTCONFPATH + "/module[@name='Meteo']/apikey")[0].text
 
     def call_handle(self):
         """ Method: executed when the module event is raised """
@@ -60,4 +60,4 @@ class Meteo(BotModule):
             forecast = forecastday[0].xpath("fcttext_metric")
             forecast_txt = forecast[0].text
 
-        self.c.privmsg(self.argument[2], "Meteo à {:.20s}: {:.100s}".format(splited_msg[0], forecast_txt))
+        self.c.privmsg(self.argument[2], "Meteo à {:.20s}: {:.200s}".format(splited_msg[0], forecast_txt))

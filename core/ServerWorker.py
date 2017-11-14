@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.3
+Chamot V2.3.1
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
@@ -61,12 +61,18 @@ class Worker(irc.bot.SingleServerIRCBot):
         print(e.arguments[0])
         self.c = c
         self.admin_module_object.run(c)
+
+        self.c.privmsg("Themis", u"IDENTIFY " + self.password)
+        botinfo = self.server_node.xpath("botinfo")
+        if len(botinfo) > 0 and botinfo[0].get("obfuscate") == "false":
+            c.mode(self.nickname, "-x")
+        else:
+            c.mode(self.nickname, "+x")
+        c.mode(self.nickname, "+B")
+        print("[" + self.url + "] identified as " + self.nickname + " and as a bot")
+
         for channel in self.server_node.xpath("salon"):
             self.join_chan(channel)
-        time.sleep(1)
-        self.c.privmsg("Themis", u"IDENTIFY " + self.password)
-        c.mode("Chamot", "+B")
-        print("[" + self.url + "] identified as " + self.nickname + " and as a bot")
 
     def on_privnotice(self, c, e):
         del c, e

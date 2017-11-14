@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3
+Modular-IRCBot V2.3.1
 Administrator Module Class
 
 Creator: Harrygiel
@@ -50,11 +50,13 @@ class AdminModule(threading.Thread):
             splited_msg = [argument for argument in splited_msg if argument != ""]
             node_name = splited_msg[len(splited_msg)-1]
 
+            if node_name[0] != "#":
+                node_name = self.parent.url
             base_node = MCS.get_first_real_root(self.parent.url, node_name)
             root_node_path = MCS.botConfObject.getpath(base_node[0])
 
             admin_node = MCS.recursively_scan_node_info(root_node_path, "admin", "mask", self.argument[0], False)
-            if admin_node is not False or admin_node is not None:
+            if admin_node is not False and admin_node is not None:
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
                 self.execute_admin_order(self.argument[1], admin_node)
             else:

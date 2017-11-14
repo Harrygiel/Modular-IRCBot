@@ -32,7 +32,8 @@ This project is a modular IRC Bot in python who can wistand a lot of problems wi
 
   * Thread safe worked for every server, channel and module
   * Fully controled by IRC PV, with an administrator recursive tree
-  * Fully customisable configuration from server or from PV
+  * Regexp allowed in mask for admin and blacklisted user
+  * Fully customisable configuration from server or from PV (newly added function can still be in implementation for PV)
   * Every channel can have his own list of module, taking the default rule from the server, then from the general configuration
   * Start and stop module on the fly, without needing restart
   * Print a list of command on every channel, linked to started module and not global list
@@ -40,7 +41,7 @@ This project is a modular IRC Bot in python who can wistand a lot of problems wi
   * Full log system
   * A lot of native module, and an easy way to implement new one, without having to know threads, event, or anything linked to the core part.
   * Nearly never need to be stopped
-  * Recursive blacklist tree (soon)
+  * Recursive blacklist tree
   * Code cleaned by SonarQube and covered by python3-coverage
 
 ## WARNING
@@ -180,6 +181,18 @@ Q: This script corrupted my user, computer, my house and burnt my dog !
 ```
 A: Wow seriously ? What a powerful bot. No seriously you where prevented that it's a one-man made project and that some bug could be found. send me an issue or/and contact me.
 
+## Changelog
+
+* V2.3.1
+
+- Allow activation or desactivation of server
+obfuscation from conf
+- Allow use of official regexp in every mask
+- Pyramidal management of blacklist in configuration
+- Allow activation or desactivation of blacklist
+in channel from conf
+- Removed useless commented line
+
 * V2.3
 
 - Look in modules folder to find module name
@@ -201,15 +214,6 @@ automatically in any case
 - Fixed minor bug
 - Fixed code smell (Sonar)
 
-* V2.1.3
-
-- Add native module:
-   * The
-   * Chocolat
-   * Biere
-   * And a lot of others
-- Corrected Cafe et Amour
-
 * Before
 
 See Changelog
@@ -221,21 +225,22 @@ From 0 (least important) to 5 (most important)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
 - Add warning possibility for desactivated modules         0
-- Check if module DO reload correctly                      1
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
+- Module: send PV message at user connexion (remember)     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
+- Allow use of notice and private                          2
+- Module: read any link title                              2
 - Allow bot name to be changed (code AND /nick)            2
-- Send PV message at user connexion (remember)             2
-- Allow regexp in admin mask                               3
-- Allow use of official admin from channel                 3
-- Act from bash as superadmin                              3
+- Module: send global message                              2
+- Allow use of official admin from channel in conf option  3
+- Act from bash as superadmin                              3 (REPORTED)
 - Module: Protect from mass AND flood HL                   3
-- Add Blacklist                                            3
+- Add Blacklist modification from PV                       3
 
 ## Authors
 
