@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3.2
+Modular-IRCBot v2.3.3
 The core of the module system: look for module, activate or desactivate them, etc...
 
 Creator: Harrygiel
@@ -51,7 +51,6 @@ def locally_scan_node_info(node, node_attr, node_value):
     except re.error:
         print("regexp badly written")
         return False
-
 
 def get_first_real_root(server_url, channel_name):
     """ Function: look for a channel node.
@@ -101,17 +100,19 @@ def get_new_module_node(module_name, state):
     module_node.set('activated', state)
     return module_node
 
-def get_new_admin_node(admin_mask, level):
+def get_new_admin_node(admin_mask, level=1):
     """ Function: create a new admin node """
     module_node = etree.Element("admin")
     module_node.set('mask', admin_mask)
     module_node.set('level', level)
     return module_node
 
-def get_new_blacklisted_node(mask):
+def get_new_node(node_name, attr_dict, possible_attr):
     """ Function: create a new blacklisted node """
-    module_node = etree.Element("blacklisted")
-    module_node.set('mask', mask)
+    module_node = etree.Element(node_name)
+    for attr_name, attr_value in attr_dict.items():
+        if attr_name in possible_attr:
+            module_node.set(attr_name, attr_value)
     return module_node
 
 def get_node_attr_to_bool(node, attr_name, default=True):
@@ -123,6 +124,15 @@ def get_node_attr_to_bool(node, attr_name, default=True):
         return True
     else:
         return False
+
+def range_depth(range_name):
+    """ Function: get range depth """
+    if range_name[0] == "#":
+        return 3
+    elif range_name.lower() == "global":
+        return 1
+    else:
+        return 2
 
 def node_depth(node):
     """ Function: get node depth """
@@ -186,57 +196,43 @@ def change_module_node_by_activation(range_xpath_expr, module_name, state):
         print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")
         return False
 
-def change_admin_node_level(admin_nodes, level):
-    """ Function: change activation state """
-    if admin_nodes.get("level") == level:
-        print("[" + threading.current_thread().name + "] Admin already level: " + level + " !")
-        return False
-    else:
-        if int(level) > 0:
-            admin_nodes.set('level', level)
-            print("[" + threading.current_thread().name + "] Admin now level: " + level + " !")
-        else:
-            admin_nodes.getparent().remove(admin_nodes)
-            print("[" + threading.current_thread().name + "] Admin now removed !")
-        return True
+def merge_node(new_node, root_path, merge_attr, remove_case):
+    """ Function: merge node and remove old one.
+    remove if an attr is in remove_case dict """
 
-def change_admin_level(range_xpath_expr, admin_mask, level):
-    """ Function: look for the range of the new module node and create it if needed"""
-    range_nodes = botConfObject.xpath(range_xpath_expr)
-    if len(range_nodes) > 0:
-        admin_nodes = range_nodes[0].xpath("admin[@mask='" + admin_mask + "']")
-        if len(admin_nodes) > 0:
-            return change_admin_node_level(admin_nodes[0], level)
-        else:
-            if int(level) > 0:
-                range_nodes[0].insert(0, get_new_admin_node(admin_mask, level))
-                print("[" + threading.current_thread().name + "] Now admin")
-            else:
-                print("[" + threading.current_thread().name + "] Already level 0 or under")
-            return True
-    else:
-        print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")
-        return False
+    is_removable = False
+    thread_name = threading.current_thread().name
+    for attr in remove_case:
+        checked_attr = new_node.get(attr)
+        if attr in new_node.attrib and new_node.attrib[attr] == remove_case[attr]:
+            is_removable = True
 
-def change_blacklisted(range_xpath_expr, mask, state):
-    """ Function: look for the range of the blacklist node and create it if needed"""
-    range_nodes = botConfObject.xpath(range_xpath_expr)
+    range_nodes = botConfObject.xpath(root_path)
     if len(range_nodes) > 0:
-        nodes = range_nodes[0].xpath("blacklisted[@mask='" + mask + "']")
+        range_node = range_nodes[0]
+        nodes = range_node.xpath("{:s}[@{:s}='{:s}']".format(new_node.tag, merge_attr[0], merge_attr[1]))
         if len(nodes) > 0:
-            if state == "true":
-                print("[" + threading.current_thread().name + "] Already blacklisted")
+            # A previous node
+            node = nodes[0]
+            if is_removable is True:
+                # Remove old node
+                node.getparent().remove(node)
+                print("[" + thread_name + "] Node removed from " + root_path)
             else:
-                nodes[0].getparent().remove(nodes[0])
-                print("[" + threading.current_thread().name + "] blacklisted now removed !")
-            return True
+                # Merge nodes
+                node.attrib.update(new_node.attrib)
+                print("[" + thread_name + "] Node merged in " + root_path)
         else:
-            if state == "true":
-                range_nodes[0].insert(0, get_new_blacklisted_node(mask))
-                print("[" + threading.current_thread().name + "] Now blacklisted")
+            # No previous node
+            if is_removable is True:
+                # Check if trying to remove non existing node
+                print("[" + thread_name + "] Node didn't existed before. Nothing removed from " + root_path)
+                return False
             else:
-                print("[" + threading.current_thread().name + "] Already unblacklisted")
-            return True
+                # Insert new node
+                range_node.insert(0, new_node)
+                print("[" + thread_name + "] Node added to " + root_path)
+        return True
     else:
-        print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")
+        print("[" + thread_name + "] Nothing at: " + root_path + " !")
         return False

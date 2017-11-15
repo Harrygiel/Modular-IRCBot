@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3.1
+Modular-IRCBot v2.3.3
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
@@ -95,6 +95,7 @@ class Worker(threading.Thread):
     def stop_module(self, module_name):
         module_object = self.module_dict.pop(module_name, None)
         if module_object != None:
+            module_object.stop()
             del module_object
             return True
         else:

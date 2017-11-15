@@ -13,24 +13,34 @@ CONTRIBUTORS: MemePasMoi
 ################       TODO       ################    (priority)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
-- Add warning possibility for desactivated modules         0
+- Add warning possibility for desactivated modules         0 (DESACTIVATED MODULE ARE NOT LOADED)
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
-- Module: send PV message at user connexion (remember)     1
+- Module: send PV message at user connexion (Notify)       1
 - Module: TCL script directly in bot ?                     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
 - Allow use of notice and private                          2
-- Module: read any link title                              2
+- Module: read any link title                              2 (DONE)
 - Allow bot name to be changed (code AND /nick)            2
 - Module: send global message                              2
 - Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)
 - Module: Protect from mass AND flood HL                   3
 
 ################    CHANGELOG     ################
+
+########   V2.3.3
+
+- Allow admin module auto-restart
+- Merged function change_admin_level and
+change_blacklisted in edit_recursive_node
+- Merged equivalent in ModuleCoreSystem to
+merge_node
+- Add native module:
+   * Urlreader
 
 ########   V2.3.2
 

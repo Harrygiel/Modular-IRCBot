@@ -158,30 +158,36 @@ You should be able to simple replace old file by new one. if any information abo
 Q: The script is not working !
 ```
 A: Read this file COMPLETELY first, then if nothing work, post an issue or/and contact me.
-
-
 ```
 Q: I have a perfect idea for the script or for a module!
 ```
-A: 2 solutions: Clone the git, create a branch, add your feature, do a CLEAN pull request, with description of your work, and wait. Or ask nicely and maybe one day, somebody will add it for you.
-
+A: 2 solutions: Clone the git, create a branch, add your feature, do a CLEAN pull request, with description of your work, and wait. Or ask nicely in the pad and maybe one day, somebody will add it for you.
+https://docs.google.com/spreadsheets/d/18WmUvHU_vjJSDU1eTamoWHikN2jyHwpxDqVheaKYBC4/edit#gid=0
 ```
 Q: I can add a feature, but I don't have any idea!
 ```
-A: Great ! Just ask around, I'm pretty sure some people have great idea.
-
+A: Great ! Just ask around, I'm pretty sure some people have great idea. You can look in the pad too:
+https://docs.google.com/spreadsheets/d/18WmUvHU_vjJSDU1eTamoWHikN2jyHwpxDqVheaKYBC4/edit#gid=0
 ```
 Q: After an update, the script is not working anymore!
 ```
-
-Have you look at the [Updating the script](https://github.com/Harrygiel/Modular-IRCBot#updating-the-script) part ? If it's still not working, send an issue
-
+A: Have you look at the [Updating the script](https://github.com/Harrygiel/Modular-IRCBot#updating-the-script) part ? If it's still not working, send an issue
 ```
 Q: This script corrupted my user, computer, my house and burnt my dog !
 ```
 A: Wow seriously ? What a powerful bot. No seriously you where prevented that it's a one-man made project and that some bug could be found. send me an issue or/and contact me.
 
 ## Changelog
+
+* V2.3.3
+
+- Allow admin module auto-restart
+- Merged function change_admin_level and
+change_blacklisted in edit_recursive_node
+- Merged equivalent in ModuleCoreSystem to
+merge_node
+- Add native module:
+   * Urlreader
 
 * V2.3.2
 
@@ -202,20 +208,6 @@ obfuscation from conf
 in channel from conf
 - Removed useless commented line
 
-* V2.3
-
-- Look in modules folder to find module name
-without needing to write them all in the default
-configuration (clean conf xml a lot)
-- Can load new module from modules folder
-- Add native module: Meteo
-- Changed "module" folder to "modules"
-- Changed str+str concat with str.format()
-in modules
-- Fixed log sender name
-- Fixed minor bugs
-- Cleaned every instance of the first bot name
-
 * Before
 
 See Changelog
@@ -226,18 +218,17 @@ From 0 (least important) to 5 (most important)
                                                       (priority)
 - Seen, Spotify, deezer, wiki and co modules               0
 - Add Nose to the cover project                            0
-- Add warning possibility for desactivated modules         0
+- Add warning possibility for desactivated modules         0 (DESACTIVATED MODULE ARE NOT LOADED)
 - Clear every code smell                                   1
 - Allow start module only if module exist                  1
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
-- Module: send PV message at user connexion (remember)     1
+- Module: send PV message at user connexion (Notify)       1
 - Module: TCL script directly in bot ?                     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
 - Allow use of notice and private                          2
-- Module: read any link title                              2
 - Allow bot name to be changed (code AND /nick)            2
 - Module: send global message                              2
 - Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)

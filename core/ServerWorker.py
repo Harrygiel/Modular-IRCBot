@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.3.1
+Chamot V2.3.3
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
@@ -100,6 +100,11 @@ class Worker(irc.bot.SingleServerIRCBot):
         MCS.append_log(self.url + " : kicked from " + e.target + " by " + e.source)
         self.c.join(e.target)
         del c
+
+    def restart_admin_module(self):
+        self.admin_module_object.stop()
+        self.admin_module_object = AdminModule(self)
+        self.admin_module_object.run(self.c)
 
     def join_chan(self, channel_node):
         channel_worker_object = core.ChannelWorker.Worker(self.c, channel_node, self)

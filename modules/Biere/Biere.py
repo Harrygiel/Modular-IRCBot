@@ -13,7 +13,8 @@ Creator: MemePasMoi
 Contributor: Harrygiel
 """
 
-import random
+import random, requests
+from bs4 import BeautifulSoup
 from modules.BotModule import BotModule
 
 class Biere(BotModule):
@@ -2102,9 +2103,60 @@ class Biere(BotModule):
         splited_msg = msg.split(" ")
         splited_msg = [argument for argument in splited_msg if argument != ""]
 
+        if len(splited_msg) > 2 and splited_msg[1].lower() == "info":
+            command_len = len(splited_msg[0]) + len(splited_msg[1]) + 2
+            self.c.privmsg(target, self.get_infos_biere(msg[command_len:]))
+            return
         if len(splited_msg) < 2 or sender in splited_msg[1]:
             offre_biere_msg = "{:.20s} s'ouvre une {:.30s} en solo : santé !!!".format(sender.nick, random.choice(self.biere_list))
             self.c.privmsg(target, offre_biere_msg)
         else:
             offre_biere_msg = "{:.20s} offre une {:.30s} à {:.20s}: cul sec !!!".format(sender.nick, random.choice(self.biere_list), splited_msg[1])
             self.c.privmsg(target, offre_biere_msg)
+
+    def get_bierelist(self, beername):
+        link = "https://www.ratebeer.com/findbeer.asp?beername=" + beername
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        page = requests.post(link, headers=headers)
+        table = BeautifulSoup(page.text, "lxml").find("table", {"class": "table table-hover table-striped"})
+
+        try:
+            beer_details_links = []
+            for a in table.find_all('a', href=True):
+                if not str(a['href']).startswith('/beer/rate/'):
+                    beer_details_links.append(a['href'])
+            return beer_details_links
+        except:
+            return
+
+    def get_biere_detail(self, link):
+        base_url = "https://www.ratebeer.com"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        fulllink = base_url + link
+        page = requests.post(fulllink, headers=headers, verify=False)
+        try:
+            beer_stats = BeautifulSoup(page.text, "lxml").find("div", {"class": "stats-container"})
+            response = link.split("/")[2].upper() + " || " + beer_stats.text + " || " + fulllink
+            return response
+        except:
+            return
+
+    def get_infos_biere(self, nomdebiere):
+        beer_list = self.get_bierelist(nomdebiere)
+
+        if beer_list:
+            # plusieurs réponses
+            if len(beer_list) > 1:
+                try:
+                    return "Plus de 1 bières trouvée, premier résultat: " + self.get_biere_detail(beer_list[0])
+                except:
+                    return "aucune bière trouvée"
+            # une seule réponse
+            elif len(beer_list) == 1:
+                try:
+                    return self.get_biere_detail(beer_list[0])
+                except:
+                    return "aucune bière trouvée"
+        # aucune réponse
+        else:
+            return "aucune bière trouvée"
