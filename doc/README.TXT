@@ -30,7 +30,7 @@ This project is a modular IRC Bot in python who can wistand a lot of problems wi
 
 * Features:
 
-  * Thread safe worked for every server, channel and module
+  * Thread safe worker for every server, channel and module
   * Fully controled by IRC PV, with an administrator recursive tree
   * Regexp allowed in mask for admin and blacklisted user
   * Fully customisable configuration from server or from PV (newly added function can still be in implementation for PV)
@@ -183,6 +183,15 @@ A: Wow seriously ? What a powerful bot. No seriously you where prevented that it
 
 ## Changelog
 
+* V2.3.2
+
+- Corrected recursively_scan_node_info error:
+    it overwrited the data if the next was a 
+    bolean false, meaning no match had been found
+- Allow use of official admin as bot admin
+- allow complete blacklist modification from admin
+- Multiple bug fix
+
 * V2.3.1
 
 - Allow activation or desactivation of server
@@ -207,13 +216,6 @@ in modules
 - Fixed minor bugs
 - Cleaned every instance of the first bot name
 
-* V2.2
-
-- Allow module to trigger error and restart
-automatically in any case
-- Fixed minor bug
-- Fixed code smell (Sonar)
-
 * Before
 
 See Changelog
@@ -230,6 +232,7 @@ From 0 (least important) to 5 (most important)
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
 - Module: send PV message at user connexion (remember)     1
+- Module: TCL script directly in bot ?                     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
@@ -237,10 +240,8 @@ From 0 (least important) to 5 (most important)
 - Module: read any link title                              2
 - Allow bot name to be changed (code AND /nick)            2
 - Module: send global message                              2
-- Allow use of official admin from channel in conf option  3
-- Act from bash as superadmin                              3 (REPORTED)
+- Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)
 - Module: Protect from mass AND flood HL                   3
-- Add Blacklist modification from PV                       3
 
 ## Authors
 

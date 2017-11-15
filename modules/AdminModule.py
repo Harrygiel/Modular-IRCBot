@@ -6,13 +6,13 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.1
+Modular-IRCBot V2.3.2
 Administrator Module Class
 
 Creator: Harrygiel
 """
 
-import threading, os
+import threading, os, irc.bot
 from lxml import etree
 
 import core.ModuleCoreSystem as MCS
@@ -50,13 +50,24 @@ class AdminModule(threading.Thread):
             splited_msg = [argument for argument in splited_msg if argument != ""]
             node_name = splited_msg[len(splited_msg)-1]
 
+            off_admin = False
             if node_name[0] != "#":
                 node_name = self.parent.url
+                print("is off admin not tested")
+            else:
+                try:
+                    off_admin = self.parent.channels[node_name].is_oper(self.argument[0].nick)
+                except KeyError:
+                    pass
+
             base_node = MCS.get_first_real_root(self.parent.url, node_name)
             root_node_path = MCS.botConfObject.getpath(base_node[0])
 
             admin_node = MCS.recursively_scan_node_info(root_node_path, "admin", "mask", self.argument[0], False)
-            if admin_node is not False and admin_node is not None:
+
+            is_bot_admin = admin_node is not False and admin_node is not None
+            is_off_admin_and_used = off_admin is True and self.parent.channel_dict[node_name].useoffadmin is True
+            if is_off_admin_and_used or is_bot_admin:
                 MCS.append_log(self.argument[0] + " call: " + self.argument[1])
                 self.execute_admin_order(self.argument[1], admin_node)
             else:
@@ -92,6 +103,12 @@ class AdminModule(threading.Thread):
 
         elif msg.startswith("!admin delAdmin") and self.command_checker(splited_msg, 4, "!admin delAdmin <pseudo!~realname@host> <range>"):
             self.change_admin_level(splited_msg[2], splited_msg[3], "0", admin_node.get("level"))
+
+        elif msg.startswith("!admin addBlacklist") and self.command_checker(splited_msg, 4, "!admin addBlacklist <pseudo!~realname@host> <range>"):
+            self.change_blacklisted(splited_msg[2], splited_msg[3], "true")
+
+        elif msg.startswith("!admin delBlacklist") and self.command_checker(splited_msg, 4, "!admin delBlacklist <pseudo!~realname@host> <range>"):
+            self.change_blacklisted(splited_msg[2], splited_msg[3], "false")
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):
             MCS.set_save_conf(splited_msg[2])
@@ -185,6 +202,20 @@ class AdminModule(threading.Thread):
         else:
             self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Info: " + info_name + " unknown !")
             return
+
+    def change_blacklisted(self, mask, node_name, state):
+        is_changed = False
+        blacklisted_root_path = MCS.get_node_root_path(node_name, self)
+        if blacklisted_root_path is not False:
+            is_changed = MCS.change_blacklisted(blacklisted_root_path, mask, state)
+        else:
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] Not connected on the channel " + node_name + " !")
+
+        if is_changed:
+            MCS.append_log(mask + " now blacklisted to " + state + " on " + node_name)
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + mask + " now blacklisted to " + state + " on " + node_name)
+        else:
+            self.c.privmsg(self.argument[0].nick, "[" + self.name + "] " + mask + " not changed to: " + state + " !")
 
     def change_admin_level(self, admin_mask, node_name, level, sender_level):
         """ Method: change admin state in node_name """

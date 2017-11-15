@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3.1
+Modular-IRCBot v2.3.2
 The core of the module system: look for module, activate or desactivate them, etc...
 
 Creator: Harrygiel
@@ -35,7 +35,9 @@ def recursively_scan_node_info(root_node_path, node_path, node_attr, node_value,
                 if stop_if_found:
                     return locally_scan_node_info(node, node_attr, node_value)
                 else:
-                    return_node = locally_scan_node_info(node, node_attr, node_value)
+                    result = locally_scan_node_info(node, node_attr, node_value)
+                    if result is not False:
+                        return_node = result
         root_node = root_node.getparent()
     return return_node
 
@@ -100,11 +102,27 @@ def get_new_module_node(module_name, state):
     return module_node
 
 def get_new_admin_node(admin_mask, level):
-    """ Function: create a new module node """
+    """ Function: create a new admin node """
     module_node = etree.Element("admin")
     module_node.set('mask', admin_mask)
     module_node.set('level', level)
     return module_node
+
+def get_new_blacklisted_node(mask):
+    """ Function: create a new blacklisted node """
+    module_node = etree.Element("blacklisted")
+    module_node.set('mask', mask)
+    return module_node
+
+def get_node_attr_to_bool(node, attr_name, default=True):
+    """ Function: convert a node attribute to a bool even if attr not found"""
+    attr_val = node.get(attr_name)
+    if attr_val is None:
+        return default
+    if attr_val.lower() == "true":
+        return True
+    else:
+        return False
 
 def node_depth(node):
     """ Function: get node depth """
@@ -192,8 +210,32 @@ def change_admin_level(range_xpath_expr, admin_mask, level):
         else:
             if int(level) > 0:
                 range_nodes[0].insert(0, get_new_admin_node(admin_mask, level))
+                print("[" + threading.current_thread().name + "] Now admin")
             else:
                 print("[" + threading.current_thread().name + "] Already level 0 or under")
+            return True
+    else:
+        print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")
+        return False
+
+def change_blacklisted(range_xpath_expr, mask, state):
+    """ Function: look for the range of the blacklist node and create it if needed"""
+    range_nodes = botConfObject.xpath(range_xpath_expr)
+    if len(range_nodes) > 0:
+        nodes = range_nodes[0].xpath("blacklisted[@mask='" + mask + "']")
+        if len(nodes) > 0:
+            if state == "true":
+                print("[" + threading.current_thread().name + "] Already blacklisted")
+            else:
+                nodes[0].getparent().remove(nodes[0])
+                print("[" + threading.current_thread().name + "] blacklisted now removed !")
+            return True
+        else:
+            if state == "true":
+                range_nodes[0].insert(0, get_new_blacklisted_node(mask))
+                print("[" + threading.current_thread().name + "] Now blacklisted")
+            else:
+                print("[" + threading.current_thread().name + "] Already unblacklisted")
             return True
     else:
         print("[" + threading.current_thread().name + "] Nothing at: " + range_xpath_expr + " !")

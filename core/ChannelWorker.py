@@ -25,11 +25,8 @@ class Worker(threading.Thread):
         self.parent = parent
         self.node = channel_node
         self.channel_name = self.node.get("name")
-        blacklist = self.node.get("blacklist")
-        if blacklist is None or blacklist.lower() == "true":
-            self.blacklist = True
-        else:
-            self.blacklist = False
+        self.blacklist = MCS.get_node_attr_to_bool(self.node, "blacklist")
+        self.useoffadmin = MCS.get_node_attr_to_bool(self.node, "useoffadmin", False)
         self.name = parent.url + "/" + self.channel_name
         self.is_running = True
         self.module_dict = {}

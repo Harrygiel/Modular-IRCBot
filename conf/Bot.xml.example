@@ -22,15 +22,15 @@
       <apikey>wunderground_key</apikey>
     </module>
 
-  <server name="Log Name" url="url.irc.com" port="6667">
-    <botinfo name="Bot" password="*********" obfuscate="false"/>
+  <server name="Log Name" url="url.irc.com" port="6667" obfuscate="false">
+    <botinfo name="Bot" password="*********"/>
     <blacklisted mask="[^!]*!~[^@]*@troll.*"/>
     <salon name="#testground">
       <module name="Youtube" activated="true"/>
       <module name="Dictionary" activated="false"/>
       <module name="Compliment" activated="true"/>
     </salon>
-    <salon name="#testground2" blacklist="false">
+    <salon name="#testground2" blacklist="false" useoffadmin="true">
       <admin mask="pseudo!~realname@host" level="10"/>
       <blacklisted mask=".*"/>
     </salon>

@@ -13,7 +13,7 @@ Creator: Harrygiel
 """
 
 import sys, time, threading, time
-import irc.bot, irc.strings
+import irc.bot
 
 import core.ChannelWorker
 import core.ModuleCoreSystem as MCS
@@ -63,11 +63,11 @@ class Worker(irc.bot.SingleServerIRCBot):
         self.admin_module_object.run(c)
 
         self.c.privmsg("Themis", u"IDENTIFY " + self.password)
-        botinfo = self.server_node.xpath("botinfo")
-        if len(botinfo) > 0 and botinfo[0].get("obfuscate") == "false":
-            c.mode(self.nickname, "-x")
-        else:
+        is_obfuscating = MCS.get_node_attr_to_bool(self.server_node, "obfuscate")
+        if is_obfuscating:
             c.mode(self.nickname, "+x")
+        else:
+            c.mode(self.nickname, "-x")
         c.mode(self.nickname, "+B")
         print("[" + self.url + "] identified as " + self.nickname + " and as a bot")
 

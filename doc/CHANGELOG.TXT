@@ -19,6 +19,7 @@ CONTRIBUTORS: MemePasMoi
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
 - Module: send PV message at user connexion (remember)     1
+- Module: TCL script directly in bot ?                     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
@@ -26,12 +27,19 @@ CONTRIBUTORS: MemePasMoi
 - Module: read any link title                              2
 - Allow bot name to be changed (code AND /nick)            2
 - Module: send global message                              2
-- Allow use of official admin from channel in conf option  3 
-- Act from bash as superadmin                              3 (REPORTED)
+- Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)
 - Module: Protect from mass AND flood HL                   3
-- Add Blacklist modification from PV                       3
 
 ################    CHANGELOG     ################
+
+########   V2.3.2
+
+- Corrected recursively_scan_node_info error:
+	it overwrited the data if the next was a 
+    bolean false, meaning no match had been found
+- Allow use of official admin as bot admin
+- allow complete blacklist modification from admin
+- Multiple bug fix
 
 ########   V2.3.1
 
