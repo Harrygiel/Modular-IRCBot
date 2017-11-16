@@ -24,13 +24,22 @@ CONTRIBUTORS: MemePasMoi
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
 - Allow use of notice and private                          2
-- Module: read any link title                              2 (DONE)
 - Allow bot name to be changed (code AND /nick)            2
 - Module: send global message                              2
 - Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)
 - Module: Protect from mass AND flood HL                   3
+- Allow allmodule off or on in channel configuration       3
+- Merge edit and change_module_node_state                  3
 
 ################    CHANGELOG     ################
+
+########   V2.3.4
+
+- Corrected major critical bug with unsafe
+threading variable who was overwrited if another
+message was sent during a message parsing
+- Allow multiple start or stop of module
+- Corrected Readme with new function
 
 ########   V2.3.3
 

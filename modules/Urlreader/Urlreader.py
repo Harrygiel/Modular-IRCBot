@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.3
+Modular-IRCBot V2.3.4
 Urlreader Module
 
 Creator: Harrygiel
@@ -37,5 +37,5 @@ class Urlreader(BotModule):
             soup = BeautifulSoup(page.text, "lxml")
             my_title = soup.title
             if my_title is not None:
-                self.c.privmsg(self.argument[2], "URL: {:.200s}".format(my_title.text))
+                self.c.privmsg(self.argument[2], "URL: {:.200s}".format(my_title.text.strip('\r').strip('\n')))
         return None

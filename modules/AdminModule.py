@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.3
+Modular-IRCBot V2.3.4
 Administrator Module Class
 
 Creator: Harrygiel
@@ -100,13 +100,13 @@ class AdminModule(threading.Thread):
         elif msg.startswith("!admin disconnect") and self.command_checker(splited_msg, 3, "!admin disconnect <channel>"):
             self.disconnect_chan(splited_msg[2])
 
-        elif msg.startswith("!admin start") and self.command_checker(splited_msg, 4, "!admin start <module> <channel>"):
-            self.change_module_node_state(splited_msg[2], splited_msg[3], "true")
+        elif msg.startswith("!admin start") and self.command_checker(splited_msg, -4, "!admin start <module> <channel>"):
+            self.change_module_node_state(splited_msg[2:-1], splited_msg[-1], "true")
 
-        elif msg.startswith("!admin stop") and self.command_checker(splited_msg, 4, "!admin stop <module> <channel>"):
-            self.change_module_node_state(splited_msg[2], splited_msg[3], "false")
-        #!admin edit <info> [attr=value attr2=value2] <range>
-        elif msg.startswith("!admin edit") and len(splited_msg) > 3:
+        elif msg.startswith("!admin stop") and self.command_checker(splited_msg, -4, "!admin stop <module> <channel>"):
+            self.change_module_node_state(splited_msg[2:-1], splited_msg[-1], "false")
+
+        elif msg.startswith("!admin edit") and self.command_checker(splited_msg, -4, "!admin edit <info> [attr=value attr2=value2...] <range>")::
             self.edit_recursive_node(splited_msg[2], splited_msg[-1], splited_msg[3:-1])
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):
@@ -126,11 +126,19 @@ class AdminModule(threading.Thread):
     def command_checker(self, splited_msg, nbr_argument_asked, command_format_msg):
         """ Method: check if the command sent to bot have the good number of argument
         and print the good format if not """
-        if len(splited_msg) != nbr_argument_asked:
-            self.c.privmsg(self.argument[0].nick, self.prefix + "Format commande: " + command_format_msg)
-            return False
+        if nbr_argument_asked > 0:
+            if len(splited_msg) != nbr_argument_asked:
+                self.c.privmsg(self.argument[0].nick, self.prefix + "Format commande: " + command_format_msg)
+                return False
+            else:
+                return True
         else:
-            return True
+            if len(splited_msg) < -nbr_argument_asked:
+                self.c.privmsg(self.argument[0].nick, self.prefix + "Format commande: " + command_format_msg)
+                return False
+            else:
+                return True
+
 
     def connect_chan(self, channel_name):
         """ Method: connect the bot to a new chan """
@@ -153,24 +161,25 @@ class AdminModule(threading.Thread):
         else:
             self.c.privmsg(self.argument[0].nick, self.prefix + "Not connected on the channel " + channel_name + " !")
 
-    def change_module_node_state(self, module_name, node_name, state):
+    def change_module_node_state(self, module_names, node_name, state):
         """ Method: change module state for node_name if in the node """
-        is_changed = False
-        module_root_xpath = MCS.get_node_root_path(node_name, self)
-        if module_root_xpath is not False:
-            is_changed = MCS.change_module_node_by_activation(module_root_xpath, module_name, state)
-        else:
-            self.c.privmsg(self.argument[0].nick, self.prefix + "Not connected on the channel " + node_name + " !")
-
-        if is_changed:
-            MCS.append_log(module_name + " on " + node_name + " changed to: " + state  + " !")
-            self.c.privmsg(self.argument[0].nick, self.prefix + module_name + " on " + node_name + " changed to: " + state  + " !")
-            if node_name[0] == "#":
-                self.parent.channel_dict[node_name].update_module_list()
+        for module_name in module_names:
+            is_changed = False
+            module_root_xpath = MCS.get_node_root_path(node_name, self)
+            if module_root_xpath is not False:
+                is_changed = MCS.change_module_node_by_activation(module_root_xpath, module_name, state)
             else:
-                self.parent.update_module_list()
-        else:
-            self.c.privmsg(self.argument[0].nick, self.prefix + module_name + " not changed to: " + state + " !")
+                self.c.privmsg(self.argument[0].nick, self.prefix + "Not connected on the channel " + node_name + " !")
+
+            if is_changed:
+                MCS.append_log(module_name + " on " + node_name + " changed to: " + state  + " !")
+                self.c.privmsg(self.argument[0].nick, self.prefix + module_name + " on " + node_name + " changed to: " + state  + " !")
+                if node_name[0] == "#":
+                    self.parent.channel_dict[node_name].update_module_list()
+                else:
+                    self.parent.update_module_list()
+            else:
+                self.c.privmsg(self.argument[0].nick, self.prefix + module_name + " not changed to: " + state + " !")
 
     def edit_recursive_node(self, info, range_name, attr_list_text):
 
@@ -193,12 +202,12 @@ class AdminModule(threading.Thread):
 
         is_valid = True
 
-        if info.lower() == "blacklist":
+        if info.lower() == "blacklisted":
             if not "mask" in attr_dict:
                 is_valid = False
                 self.c.privmsg(self.argument[0].nick, self.prefix + "You need to specify a mask!")
             if is_valid == True:
-                new_node = MCS.get_new_node("blacklist", attr_dict, ["mask", "remove"])
+                new_node = MCS.get_new_node("blacklisted", attr_dict, ["mask", "remove"])
                 etree.dump(new_node)
                 is_changed = MCS.merge_node(new_node, root_path, ["mask", attr_dict["mask"]],{"remove":"true"})
         elif info.lower() == "admin":
@@ -219,17 +228,15 @@ class AdminModule(threading.Thread):
             if is_valid == True:
                 new_node = MCS.get_new_node("admin", attr_dict, ["mask", "level", "remove"])
                 is_changed = MCS.merge_node(new_node, root_path, ["mask", attr_dict["mask"]],{"remove":"true", "level":"0"})
-            useoffadmin
         elif info.lower() == "channel":
             if not "name" in attr_dict:
                 is_valid = False
                 self.c.privmsg(self.argument[0].nick, self.prefix + "You need to specify a name!")
 
             if is_valid == True:
-                new_node = MCS.get_new_node("admin", attr_dict, ["name", "blacklist", "useoffadmin"])
+                new_node = MCS.get_new_node("salon", attr_dict, ["name", "blacklist", "useoffadmin"])
                 is_changed = MCS.merge_node(new_node, root_path, ["name", attr_dict["name"]],{})
 
-            self.c.privmsg(self.argument[0].nick, self.prefix + "{:.50s} not implemented".format(info))
         else:
             self.c.privmsg(self.argument[0].nick, self.prefix + "{:.50s} unknown".format(info))
 
@@ -239,7 +246,7 @@ class AdminModule(threading.Thread):
         else:
             self.c.privmsg(self.argument[0].nick, self.prefix + "{:.50s} not edited in {:.50s}".format(info, range_name))
 
-    def sender_relative_admin_power(range_name):
+    def sender_relative_admin_power(self, range_name):
         root_path = MCS.get_node_root_path(range_name, self)
         sender_node = MCS.recursively_scan_node_info(root_path, "admin", "mask", self.argument[0], False)
         is_bot_admin = sender_node is not False and sender_node is not None

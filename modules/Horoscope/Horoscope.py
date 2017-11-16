@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.1
+Modular-IRCBot V2.3.4
 Horoscope Module
 
 Creator: Harrygiel
@@ -41,6 +41,6 @@ class Horoscope(BotModule):
         if len(horoscope_text) > 0 and horoscope_text[0].find(text=True) != None:
 
             horoscope_text = horoscope_text[0].find(text=True)
-            self.c.privmsg(target, "Horoscope: {:.300s}".format(horoscope_text))
+            self.c.privmsg(target, "Horoscope: {:.300s}".format(horoscope_text.strip('\n')))
         else:
             self.c.privmsg(target, "Un problème est survenu en tentant de lire la page astrologique. Verifiez l'orthographe du signe")

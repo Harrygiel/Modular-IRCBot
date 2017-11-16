@@ -48,7 +48,6 @@ class BotModule(threading.Thread):
                         MCS.append_log(self.name + " called by " + self.argument[0] + "with: " + self.argument[1])
                         self.call_handle()
                     else:
-                        print("BLACKLISTED !!!")
                         MCS.append_log(self.name + " called by blacklisted " + self.argument[0] + "with: " + self.argument[1])
                 self.callEvent.clear()
         except Exception as e:

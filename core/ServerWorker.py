@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Chamot V2.3.3
+Modular-IRCBot V2.3.4
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
@@ -93,7 +93,7 @@ class Worker(irc.bot.SingleServerIRCBot):
         del c
         for channel_name, channel_object in self.channel_dict.items():
             if channel_name == e.target:
-                channel_object.argument = [e.source, e.arguments[0], e.target]
+                channel_object.argument_queue.put([e.source, e.arguments[0], e.target])
                 channel_object.callEvent.set()
 
     def on_kick(self, c, e):

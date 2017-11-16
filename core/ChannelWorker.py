@@ -6,13 +6,13 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot v2.3.3
+Modular-IRCBot V2.3.4
 ChannelWorker Calling ModuleWorker
 
 Creator: Harrygiel
 """
 
-import os, threading, imp
+import os, threading, imp, queue
 import core.ModuleCoreSystem as MCS
 
 
@@ -31,7 +31,7 @@ class Worker(threading.Thread):
         self.is_running = True
         self.module_dict = {}
         self.thread = None
-        self.argument = ["", "", ""]
+        self.argument_queue = queue.Queue()
 
         c.join(self.node.get("name"))
 
@@ -46,11 +46,14 @@ class Worker(threading.Thread):
         while self.is_running:
             self.callEvent.wait()
             if self.is_running:
-                for module_object in self.module_dict.values():
-                    for call_text in module_object.call_set:
-                        if call_text.lower() in self.argument[1].lower():
-                            module_object.argument = self.argument
-                            module_object.callEvent.set()
+                while not self.argument_queue.empty():
+                    arguments = self.argument_queue.get()
+                    for module_object in self.module_dict.values():
+                        for call_text in module_object.call_set:
+                            if call_text.lower() in arguments[1].lower():
+                                module_object.argument = arguments
+                                module_object.callEvent.set()
+                    self.argument_queue.task_done()
             self.callEvent.clear()
 
     def stop(self):

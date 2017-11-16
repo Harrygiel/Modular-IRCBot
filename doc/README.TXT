@@ -104,17 +104,14 @@ Allow channel connexion
 "!admin disconnect <channel>":
 Allow channel disconnexion
 
-"!admin start <module> <channel>":
+"!admin start [module1 ...] <channel>":
 Add a module to the said channel
 
-"!admin stop <module> <channel>":
+"!admin stop [module1 ...] <channel>":
 Remove a module to the said channel
 
-"!admin addAdmin <pseudo!~realname@host> <level> <range>": (servers, channels, modules)
-Add an (COMPLETE) admin mask on the said range at the said level (if level = 0, remove the admin)
-
-"!admin delAdmin <pseudo!~realname@host> <range>": (servers, channels, modules)
-Remove an (COMPLETE) admin mask on the said range at the said level
+"!admin edit <info> [argument=value ...] <range>": (admin, blacklisted, channel) (servers, channels, modules)
+allow update or removal of a configuration node, like admin, blacklisted or channel node
 
 "!admin saveConf <xml_file>":
 Allow to save the bot configuration as a file WARNING, you can erease the actual configuration file !
@@ -179,6 +176,13 @@ A: Wow seriously ? What a powerful bot. No seriously you where prevented that it
 
 ## Changelog
 
+* V2.3.4
+
+- Corrected major critical bug with unsafe
+threading variable who was overwrited if another
+message was sent during a message parsing
+- Corrected Readme with new function
+
 * V2.3.3
 
 - Allow admin module auto-restart
@@ -197,16 +201,6 @@ merge_node
 - Allow use of official admin as bot admin
 - allow complete blacklist modification from admin
 - Multiple bug fix
-
-* V2.3.1
-
-- Allow activation or desactivation of server
-obfuscation from conf
-- Allow use of official regexp in every mask
-- Pyramidal management of blacklist in configuration
-- Allow activation or desactivation of blacklist
-in channel from conf
-- Removed useless commented line
 
 * Before
 
