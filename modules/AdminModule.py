@@ -106,7 +106,7 @@ class AdminModule(threading.Thread):
         elif msg.startswith("!admin stop") and self.command_checker(splited_msg, -4, "!admin stop <module> <channel>"):
             self.change_module_node_state(splited_msg[2:-1], splited_msg[-1], "false")
 
-        elif msg.startswith("!admin edit") and self.command_checker(splited_msg, -4, "!admin edit <info> [attr=value attr2=value2...] <range>")::
+        elif msg.startswith("!admin edit") and self.command_checker(splited_msg, -4, "!admin edit <info> [attr=value attr2=value2...] <range>"):
             self.edit_recursive_node(splited_msg[2], splited_msg[-1], splited_msg[3:-1])
 
         elif msg.startswith("!admin saveConf") and self.command_checker(splited_msg, 3, "!admin saveConf <xml_file>"):

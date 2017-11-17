@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.1
+Modular-IRCBot V2.4
 Generic Module Class
 
 Creator: Harrygiel
@@ -28,7 +28,7 @@ class BotModule(threading.Thread):
         self.is_running = True
         self.call_set = self.get_call_set(parent.node)
         self.thread = None
-        self.argument = ["", "", ""]
+        self.argument = None
 
     def run(self):
         """ Method: start the module thread """
@@ -45,7 +45,7 @@ class BotModule(threading.Thread):
                 if self.is_running:
                     blacklisted = MCS.recursively_scan_node_info(self.path, "blacklisted", "mask", self.argument[0], True)
                     if self.parent.blacklist is False or blacklisted is None or blacklisted is False:
-                        MCS.append_log(self.name + " called by " + self.argument[0] + "with: " + self.argument[1])
+                        MCS.append_log(self.name + " called by " + self.argument[0] + " with: " + self.argument[1])
                         self.call_handle()
                     else:
                         MCS.append_log(self.name + " called by blacklisted " + self.argument[0] + "with: " + self.argument[1])

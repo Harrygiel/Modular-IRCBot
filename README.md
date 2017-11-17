@@ -130,13 +130,13 @@ Alow to reload everything under the said range
 
 #### Adding a module
 
-##### After 2.5:
+##### After 2.3:
 
 To add a module, you have to:
 1) Create a new folder and put the module .py in this folder. The .py, the folder and the module sub-class in the file need to have the EXACT SAME NAME.
 2) Do an "!admin start <module> <channel>"
 
-##### Before 2.5:
+##### Before 2.3:
 
 ```
 To add a module, you had to:
@@ -176,6 +176,15 @@ A: Wow seriously ? What a powerful bot. No seriously you where prevented that it
 
 ## Changelog
 
+########   V2.4
+
+- Corrected major critical bug in PUBMSG analysis
+because of the case sensitivity =/= for join and
+analysis for some user
+- Added TCL module implementation
+- Add native module:
+   * Oracle (TCL version from MenzAgitat)
+
 * V2.3.4
 
 - Corrected major critical bug with unsafe
@@ -193,18 +202,9 @@ merge_node
 - Add native module:
    * Urlreader
 
-* V2.3.2
-
-- Corrected recursively_scan_node_info error:
-    it overwrited the data if the next was a 
-    bolean false, meaning no match had been found
-- Allow use of official admin as bot admin
-- allow complete blacklist modification from admin
-- Multiple bug fix
-
 * Before
 
-See Changelog
+[See Changelog](https://github.com/Harrygiel/Modular-IRCBot/blob/master/doc/CHANGELOG.TXT)
 
 ## To Do
 
@@ -218,7 +218,6 @@ From 0 (least important) to 5 (most important)
 - Allow configuration reload from file                     1
 - Advanced auto analysis feature                           1
 - Module: send PV message at user connexion (Notify)       1
-- Module: TCL script directly in bot ?                     1
 - Allow admin to list recursively                          2
 - Add Schedule event possibility                           2
 - Comment channel node on disconnection to keep conf       2
@@ -227,6 +226,8 @@ From 0 (least important) to 5 (most important)
 - Module: send global message                              2
 - Act from bash as superadmin                              3 (REPORTED: HARDER THAN PLANNED)
 - Module: Protect from mass AND flood HL                   3
+- Allow allmodule off or on in channel configuration       3
+- Merge edit and change_module_node_state                  3
 
 ## Authors
 
@@ -244,10 +245,14 @@ Script core created by Harrygiel and contributors at https://github.com/Harrygie
 The modules are created by their main author.
 Contributor of modules: MemePasMoi, Harrygiel
 
+Special thanks: MenzAgitat for every TCL module who will be implemented from http://www.boulets.oqp.me/tcl/scripts/index.html
+
 ## License
 
 Copyright (C) Harrygiel - All Rights Reserved
-Unauthorized use of this file or any file from this project, via any medium is strictly prohibited.
+Unauthorized use of this file or any file with an explicit license from this project, via any medium is strictly prohibited.
+
+/!\ MenzAgitat's TCL modules have their own creative commons license:  http://creativecommons.org/licenses/by-nc-sa/3.0/
 
 Seriously guys, you just have to ask, I want to know who will use this.
 If you send a PM on github AND on my mail, and I didn't answered for more than 1 month, you can take this as an implicit agreement to use my bot for anything except commercial use.

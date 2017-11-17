@@ -41,6 +41,6 @@ class Horoscope(BotModule):
         if len(horoscope_text) > 0 and horoscope_text[0].find(text=True) != None:
 
             horoscope_text = horoscope_text[0].find(text=True)
-            self.c.privmsg(target, "Horoscope: {:.300s}".format(horoscope_text.strip('\n')))
+            self.c.privmsg(target, "Horoscope: {:.300s}".format(horoscope_text.strip('\r').strip('\n')))
         else:
             self.c.privmsg(target, "Un problème est survenu en tentant de lire la page astrologique. Verifiez l'orthographe du signe")

@@ -24,7 +24,9 @@ class Help(BotModule):
 
     def call_handle(self):
         """ Method: executed when the module event is raised """
-        if self.start_with_call_set() is False or "chamot" in self.argument[0].nick.lower():
+        print("Help called")
+        if self.start_with_call_set() is False:
+            print("Help called but not first")
             return
         target = self.argument[2]
 

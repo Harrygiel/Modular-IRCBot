@@ -6,7 +6,7 @@ Unauthorized use of this file or any file from this project, via any medium is s
 
 Seriously guys, you just have to ask, I want to know who will use this.
 
-Modular-IRCBot V2.3.4
+Modular-IRCBot V2.4
 ServerWorker Calling ChannelWorker
 
 Creator: Harrygiel
@@ -85,14 +85,14 @@ class Worker(irc.bot.SingleServerIRCBot):
             return None
 
         for channel_name, channel_object in self.channel_dict.items():
-            if channel_name.lower() in e.arguments[0]:
+            if channel_name in e.arguments[0].lower():
                 channel_object.argument = [e.source, e.arguments[0], channel_name.lower()]
                 channel_object.callEvent.set()
 
     def on_pubmsg(self, c, e):
         del c
         for channel_name, channel_object in self.channel_dict.items():
-            if channel_name == e.target:
+            if channel_name == e.target.lower():
                 channel_object.argument_queue.put([e.source, e.arguments[0], e.target])
                 channel_object.callEvent.set()
 
@@ -109,7 +109,7 @@ class Worker(irc.bot.SingleServerIRCBot):
     def join_chan(self, channel_node):
         channel_worker_object = core.ChannelWorker.Worker(self.c, channel_node, self)
         channel_worker_object.run()
-        self.channel_dict.update({channel_node.get("name"): channel_worker_object})
+        self.channel_dict.update({channel_node.get("name").lower(): channel_worker_object})
 
     def part_chan(self, channel_name):
         self.channel_dict[channel_name].stop()
